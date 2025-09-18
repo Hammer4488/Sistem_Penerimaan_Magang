@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 
 // --- UBAH/TAMBAHKAN RUTE OTENTIKASI INI ---
-
+// 
 // Rute untuk menampilkan form login (GET)
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::get('/daftar', [AuthController::class, 'showDaftarForm'])->name('daftar');
