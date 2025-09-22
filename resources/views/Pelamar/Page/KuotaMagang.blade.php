@@ -10,19 +10,19 @@
 
     <style>
         body {
-            background-color: #f8f9fa; /* Latar belakang abu-abu muda */
+            background-color: #f8f9fa;
             font-family: 'Segoe UI', sans-serif;
         }
         .navbar-custom {
             background-color: #ffffff;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 0.5rem 0;
         }
-        .logo-img {
-            height: 40px;
-        }
-        .main-title {
-            background-color: #ffffff;
-            border-bottom: 1px solid #dee2e6;
+        .navbar-custom .logo-img {
+            height: 120px;
+            width: 120px;
+            object-fit: contain;
+            margin-right: -8px;
         }
         .quota-card {
             border: 1px solid #e0e0e0;
@@ -52,35 +52,35 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="#">
-                <img src="{{ asset('image/LOGO-PEMKOT-BARU.png') }}" alt="Logo" class="logo-img me-2">
-                <span class="fw-bold fs-5">Pemerintah Kota Banjarmasin</span>
-            </a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-4">
-                    <li class="nav-item"><a class="nav-link" href="#">Beranda</a></li>
-                    <li class="nav-item"><a class="nav-link active fw-bold" href="#">Lihat kuota magang</a></li>
-                </ul>
-                <div class="d-flex">
-                    <a href="{{ route('login') }}" class="btn btn-primary me-2"><i class="fas fa-user-plus me-1"></i> Login</a>
-                    <a href="{{ route('daftar') }}" class="btn btn-primary me-2"><i class="fas fa-user-plus me-1"></i> Daftar</a>
+            <a class="navbar-brand d-flex align-items-center" href="{{ route('beranda') }}" style="margin-left:-35px;">
+                <img src="{{ asset('image/LOGO-PEMKOT-BARU.png') }}" alt="Logo" class="logo-img">
+                <div style="line-height:1.1;">
+                    <div class="fw-bold text-dark" style="font-size:1.5rem; font-family:'Segoe UI',sans-serif;">Pemerintah Kota</div>
+                    <div class="fw-bold text-dark" style="font-size:2rem; margin-top:-4px; font-family:'Segoe UI',sans-serif;">Banjarmasin</div>
                 </div>
+            </a>
+            
+            <div class="navbar-nav me-auto ms-4">
+                <a href="{{ route('beranda') }}" class="nav-link text-dark fw-semibold me-4" style="font-size: 1.2rem;">Beranda</a>
+                <a href="{{ route('kuotamagang') }}" class="nav-link text-dark fw-semibold" style="font-size: 1.2rem;">Lihat kuota magang</a>
+            </div>
+            
+            <div class="navbar-nav ms-auto">
+                <a href="{{ route('login') }}" class="btn btn-primary btn-lg me-2"><i class="fas fa-right-to-bracket me-1"></i>Login</a>
+                <a href="{{ route('daftar') }}" class="btn btn-primary btn-lg"><i class="fas fa-user-plus me-1"></i>Daftar</a>
             </div>
         </div>
     </nav>
 
-    <div class="main-title py-5">
-        <div class="container text-center">
+    <div class="container py-5">
+        <div class="text-center mb-5">
             <h1 class="display-5 fw-bold">Kuota Magang per Dinas</h1>
             <p class="lead text-muted">Lihat keseterdiaan kuota magang di setiap dinas Pemerintah Kota Banjarmasin</p>
         </div>
-    </div>
 
-    <div class="container py-5">
         <div class="row g-4">
-
             <div class="col-lg-6">
                 <div class="card quota-card h-100">
                     <div class="card-body p-4 position-relative">
@@ -98,7 +98,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-lg-6">
                 <div class="card quota-card h-100">
                     <div class="card-body p-4 position-relative">
@@ -116,8 +115,7 @@
                     </div>
                 </div>
             </div>
-
-            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
