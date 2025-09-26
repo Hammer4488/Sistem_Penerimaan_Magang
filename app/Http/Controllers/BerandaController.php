@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth; // <-- Penting untuk mengambil data user
 
 class BerandaController extends Controller
 {
@@ -14,8 +15,5 @@ class BerandaController extends Controller
     {
         return view('Pelamar.Page.KuotaMagang');
     }
-    public function showBerandaPendaftarForm()
-    {
-        return view('Pelamar.Page.BerandaPendaftar');
-    }
+
 }

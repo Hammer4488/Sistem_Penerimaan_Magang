@@ -1,20 +1,13 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Login</title>
+@section('title', 'Login')
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-
+@push('styles')
     <style>
         /* Mengatur body dan latar belakang */
         body {
             background: linear-gradient(rgba(26, 41, 86, 0.8), rgba(34, 51, 102, 0.8)),
-            url('{{ asset("image/background.jpg") }}');
+                url('{{ asset('image/background.jpg') }}');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -118,9 +111,9 @@
             box-shadow: none;
         }
     </style>
-</head>
+@endpush
+@section('content')
 
-<body>
 
     <div class="login-wrapper">
         <div class="login-card text-center">
@@ -135,7 +128,13 @@
 
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" required autofocus>
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" id="email"
+                        name="email" value="{{ old('email') }}" required autofocus>
+                    @error('email')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
 
                 <div class="mb-4">
@@ -164,40 +163,34 @@
 
         </div>
     </div>
-</body>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
+    </div>
+@endsection
 
-</div>
-</div>
+@push('scripts')
+    <script>
+        // Pilih elemen tombol dan input password dari dokumen
+        const togglePassword = document.querySelector('#togglePassword');
+        const passwordInput = document.querySelector('#password');
+        const toggleIcon = document.querySelector('#toggleIcon');
 
-<script>
-    // Pilih elemen tombol dan input password dari dokumen
-    const togglePassword = document.querySelector('#togglePassword');
-    const passwordInput = document.querySelector('#password');
-    const toggleIcon = document.querySelector('#toggleIcon');
+        // Tambahkan event listener untuk 'click' pada tombol
+        if (togglePassword) {
+            togglePassword.addEventListener('click', function() {
+                // Cek tipe dari input password
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
 
-    // Tambahkan event listener untuk 'click' pada tombol
-    if (togglePassword) {
-        togglePassword.addEventListener('click', function() {
-            // Cek tipe dari input password
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-
-            // Ganti ikon mata
-            if (type === 'password') {
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            } else {
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            }
-        });
-    }
-</script>
-
-</body>
-
-</html>
-
-</html>
+                // Ganti ikon mata
+                if (type === 'password') {
+                    toggleIcon.classList.remove('fa-eye-slash');
+                    toggleIcon.classList.add('fa-eye');
+                } else {
+                    toggleIcon.classList.remove('fa-eye');
+                    toggleIcon.classList.add('fa-eye-slash');
+                }
+            });
+        }
+    </script>
+@endpush

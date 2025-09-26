@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sistem Penerimaan Magang Pemkot Banjarmasin</title>
+@extends('layouts.app')
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+@section('title', 'Beranda')
 
+@push('styles')
     <style>
         .navbar-custom {
             background-color: #fff;
@@ -32,8 +27,8 @@
             padding: 40px 0;
         }
     </style>
-</head>
-<body>
+@endpush
+@section('content')
 
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container">
@@ -46,7 +41,7 @@
             </a>
 
             <div class="navbar-nav me-auto ms-4">
-                <a href="{{ route('beranda') }}" class="nav-link text-dark fw-semibold me-4" style="font-size: 1.2rem;">beranda</a>
+                <a href="{{ route('beranda') }}" class="nav-link text-dark fw-semibold me-4" style="font-size: 1.2rem;">Beranda</a>
                 <a href="{{ route('kuotamagang') }}" class="nav-link text-dark fw-semibold" style="font-size: 1.2rem;">Lihat kuota magang</a>
             </div>
 
@@ -139,7 +134,5 @@
             </div>
         </div>
     </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+@endsection
