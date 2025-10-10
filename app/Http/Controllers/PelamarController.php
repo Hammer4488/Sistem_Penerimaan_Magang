@@ -6,18 +6,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; // <-- Penting untuk mengambil data user
 
 class PelamarController extends Controller
-{   
-        public function showBerandaPelamarForm()
+{
+    public function showBerandaPelamarForm()
     {
-        return view('Pelamar.Page.BerandaPelamar');
+        // Mengambil seluruh data user yang sedang login
+        $user = Auth::user();
+
+        // Mengirim data user ke view agar bisa digunakan, contoh: {{ $user->name }}
+        return view('Pelamar.Page.BerandaPelamar', ['user' => $user]);
     }
-
-        public function index()
+    public function showAjukanPelamarForm()
     {
-        // Ambil nama dari user yang sedang login saat ini
-        $namaUser = Auth::user()->name;
+        $user = Auth::user();
 
-        // Kirim data nama tersebut ke view saat merender halaman
-        return view('Pelamar.Page.BerandaPelamar', ['nama' => $namaUser]);
+        // Mengirim data user ke view agar namanya bisa langsung ditampilkan di form
+        return view('Pelamar.Page.AjukanPelamar', ['user' => $user]);
     }
 }

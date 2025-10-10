@@ -34,6 +34,11 @@ Route::get('/beranda', [BerandaController::class, 'showBerandaForm'])->name('ber
 Route::get('/kuotamagang', [BerandaController::class, 'showKuotaMagangForm'])->name('kuotamagang');
 
 Route::get('/berandapelamar', [PelamarController::class, 'showBerandaPelamarForm'])->name('berandapelamar');
-Route::get('/berandapelamar', [PelamarController::class, 'index'])
-     ->middleware('auth')
-     ->name('berandapelamar');
+// Route::get('/berandapelamar', [PelamarController::class, 'index'])
+//      ->middleware('auth')
+//      ->name('berandapelamar');
+     
+Route::get('/ajukanpelamar', [PelamarController::class, 'showAjukanPelamarForm'])->name('ajukanpelamar');
+// Route::get('/ajukanpelamar', [PelamarController::class, 'index'])
+//      ->middleware('auth')
+//      ->name('ajukanpelamar');

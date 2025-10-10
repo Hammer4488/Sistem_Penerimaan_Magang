@@ -8,37 +8,44 @@
             background-color: #f8f9fa;
             font-family: 'Segoe UI', sans-serif;
         }
+
         .navbar-custom {
             background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             padding: 0.5rem 0;
         }
+
         .navbar-custom .logo-img {
             height: 120px;
             width: 120px;
             object-fit: contain;
             margin-right: -8px;
         }
+
         .quota-card {
             border: 1px solid #e0e0e0;
             border-radius: 0.75rem;
             transition: all 0.3s ease-in-out;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.04);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
         }
+
         .quota-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08);
         }
+
         .stat-box {
             border: 1px solid #e0e0e0;
             border-radius: 0.5rem;
             padding: 0.75rem;
             background-color: #f8f9fa;
         }
+
         .stat-box .number {
             font-size: 1.5rem;
             font-weight: 700;
         }
+
         .stat-box .label {
             font-size: 0.8rem;
             color: #6c757d;
@@ -52,19 +59,25 @@
             <a class="navbar-brand d-flex align-items-center" href="{{ route('beranda') }}" style="margin-left:-35px;">
                 <img src="{{ asset('image/LOGO-PEMKOT-BARU.png') }}" alt="Logo" class="logo-img">
                 <div style="line-height:1.1;">
-                    <div class="fw-bold text-dark" style="font-size:1.5rem; font-family:'Segoe UI',sans-serif;">Pemerintah Kota</div>
-                    <div class="fw-bold text-dark" style="font-size:2rem; margin-top:-4px; font-family:'Segoe UI',sans-serif;">Banjarmasin</div>
+                    <div class="fw-bold text-dark" style="font-size:1.5rem; font-family:'Segoe UI',sans-serif;">Pemerintah
+                        Kota</div>
+                    <div class="fw-bold text-dark"
+                        style="font-size:2rem; margin-top:-4px; font-family:'Segoe UI',sans-serif;">Banjarmasin</div>
                 </div>
             </a>
-            
+
             <div class="navbar-nav me-auto ms-4">
-                <a href="{{ route('beranda') }}" class="nav-link text-dark fw-semibold me-4" style="font-size: 1.2rem;">Beranda</a>
-                <a href="{{ route('kuotamagang') }}" class="nav-link text-dark fw-semibold" style="font-size: 1.2rem;">Lihat kuota magang</a>
+                <a href="{{ route('beranda') }}" class="nav-link text-dark fw-semibold me-4"
+                    style="font-size: 1.2rem;">Beranda</a>
+                <a href="{{ route('kuotamagang') }}" class="nav-link text-dark fw-semibold" style="font-size: 1.2rem;">Lihat
+                    kuota magang</a>
             </div>
-            
+
             <div class="navbar-nav ms-auto">
-                <a href="{{ route('login') }}" class="btn btn-primary btn-lg me-2"><i class="fas fa-right-to-bracket me-1"></i>Login</a>
-                <a href="{{ route('daftar') }}" class="btn btn-primary btn-lg"><i class="fas fa-user-plus me-1"></i>Daftar</a>
+                <a href="{{ route('login') }}" class="btn btn-primary btn-lg me-2"><i
+                        class="fas fa-right-to-bracket me-1"></i>Login</a>
+                <a href="{{ route('daftar') }}" class="btn btn-primary btn-lg"><i
+                        class="fas fa-user-plus me-1"></i>Daftar</a>
             </div>
         </div>
     </nav>
@@ -86,9 +99,24 @@
                     </div>
                     <div class="card-footer bg-transparent border-0 p-4 pt-0">
                         <div class="row text-center g-2">
-                            <div class="col-4"><div class="stat-box"><div class="number text-primary">100</div><div class="label">Total Kuota</div></div></div>
-                            <div class="col-4"><div class="stat-box"><div class="number">5</div><div class="label">Kuota Terisi</div></div></div>
-                            <div class="col-4"><div class="stat-box"><div class="number text-success">95</div><div class="label">Sisa Kuota</div></div></div>
+                            <div class="col-4">
+                                <div class="stat-box">
+                                    <div class="number text-primary">100</div>
+                                    <div class="label">Total Kuota</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-box">
+                                    <div class="number text-danger">5</div>
+                                    <div class="label">Kuota Terisi</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-box">
+                                    <div class="number text-success">95</div>
+                                    <div class="label">Sisa Kuota</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -103,9 +131,24 @@
                     </div>
                     <div class="card-footer bg-transparent border-0 p-4 pt-0">
                         <div class="row text-center g-2">
-                            <div class="col-4"><div class="stat-box"><div class="number text-primary">10</div><div class="label">Total Kuota</div></div></div>
-                            <div class="col-4"><div class="stat-box"><div class="number">10</div><div class="label">Kuota Terisi</div></div></div>
-                            <div class="col-4"><div class="stat-box"><div class="number text-danger">0</div><div class="label">Sisa Kuota</div></div></div>
+                            <div class="col-4">
+                                <div class="stat-box">
+                                    <div class="number text-primary">10</div>
+                                    <div class="label">Total Kuota</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-box">
+                                    <div class="number text-danger">10</div>
+                                    <div class="label">Kuota Terisi</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-box">
+                                    <div class="number text-success">0</div>
+                                    <div class="label">Sisa Kuota</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

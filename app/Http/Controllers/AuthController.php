@@ -66,7 +66,7 @@ class AuthController extends Controller
 
         // 4. Arahkan ke halaman beranda pelamar
         // Ganti 'pelamar.beranda' dengan nama rute halaman dashboard Anda
-        return redirect()->route('beranda');
+        return redirect()->route('berandapelamar');
     }
 
         public function logout(Request $request)
