@@ -19,15 +19,16 @@
         }
 
         /* == STYLE UNTUK KOTAK SELAMAT DATANG == */
+        /* == STYLE UNTUK KOTAK SELAMAT DATANG == */
         .welcome-card {
             background-color: #ffffff;
-            /* Hapus border: 1px solid #e0e0e0; */
-            /* Hapus border-top: 4px solid #3498db; */
             border-radius: 12px;
             padding: 25px;
             margin-bottom: 25px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            /* Sedikit lebih halus dari sebelumnya */
+            border: 1px solid #dee2e6;
+            /* Menambahkan garis batas tipis */
+            box-shadow: none;
+            /* Menghapus efek bayangan */
         }
 
         /* == AKHIR STYLE KOTAK SELAMAT DATANG == */
@@ -110,16 +111,30 @@
 
         /* == STYLE KARTU DINAS == */
         /* V TAMBAHKAN SEMUA BLOK DI BAWAH INI V */
+
+        /* V TAMBAHKAN KELAS UTAMA INI V */
+        .custom-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Perbarui kelas yang sudah ada */
         .quota-card {
-            border: 1px solid #e0e0e0;
             border-radius: 0.75rem;
             transition: all 0.3s ease-in-out;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
+            background-color: #ffffff;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         }
 
         .quota-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
         }
 
         /* V TAMBAHKAN BLOK BARU INI V */
@@ -154,6 +169,22 @@
             color: #6c757d;
         }
 
+        /* V TAMBAHKAN BLOK BARU INI V */
+        .stat-box .text-total {
+            color: #0d6efd;
+            /* Biru */
+        }
+
+        .stat-box .text-terisi {
+            color: #dc3545;
+            /* Merah */
+        }
+
+        .stat-box .text-sisa {
+            color: #198754;
+            /* Hijau */
+        }
+
 
 
         /* == AKHIR STYLE KARTU DINAS == */
@@ -166,11 +197,12 @@
 
     <div class="main-content">
         <main class="content-body">
-
+            {{-- 
             <div class="flow-card welcome-card mb-4">
                 <h4 class="mb-1">Selamat Datang, {{ $user->name }}!</h4>
                 <p class="text-muted mb-0">Kelola pendaftaran magang anda di Pemerintah Kota Banjarmasin</p>
-            </div>
+            </div> --}}
+            <x-welcome />
 
             {{-- KOTAK INFORMASI PENDAFTARAN MAGANG --}}
             <div class="info-magang-alert mb-5">
@@ -218,11 +250,33 @@
                                 </div>
                             </div>
                             <div class="mt-4">
-                                {{-- Gunakan 'btn-primary' untuk dinas yang TERSEDIA --}}
-                                <a href="#" class="btn btn-primary w-100 fw-bold">Pilih Dinas Ini</a>
+                                @foreach ($dinasList as $dinas)
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="card quota-card">
+                                            {{-- ... Card body dan card footer ... --}}
+                                            <div class="card-footer ...">
+                                                {{-- ... Statistik Kuota ... --}}
+                                                <div class="mt-4">
 
-                                {{-- Gunakan 'btn-secondary disabled' untuk dinas yang KUOTA TERPENUHI --}}
-                                {{-- <a href="#" class="btn btn-secondary w-100 fw-bold disabled">Pilih Dinas Ini</a> --}}
+                                                    {{-- Cek apakah kuota masih tersedia --}}
+                                                    @if ($dinas->total_kuota - $dinas->pendaftarans->count() > 0)
+                                                        {{-- Jika TERSEDIA, tampilkan tombol biru yang aktif --}}
+                                                        <a href="{{ route('pendaftaran.create', $dinas) }}"
+                                                            class="btn btn-primary w-100 fw-bold">
+                                                            Pilih Dinas Ini
+                                                        </a>
+                                                    @else
+                                                        {{-- Jika KUOTA TERPENUHI, tampilkan tombol abu-abu nonaktif --}}
+                                                        <a href="#" class="btn btn-secondary w-100 fw-bold disabled">
+                                                            Pilih Dinas Ini
+                                                        </a>
+                                                    @endif
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>

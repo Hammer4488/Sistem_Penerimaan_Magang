@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dinas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; // <-- Penting untuk mengambil data user
 
 class PelamarController extends Controller
 {
-    public function showBerandaPelamarForm()
+    public function beranda_index()
     {
         // Mengambil seluruh data user yang sedang login
         $user = Auth::user();
@@ -15,11 +16,34 @@ class PelamarController extends Controller
         // Mengirim data user ke view agar bisa digunakan, contoh: {{ $user->name }}
         return view('Pelamar.Page.BerandaPelamar', ['user' => $user]);
     }
-    public function showAjukanPelamarForm()
+    public function ajukan_index()
+    {
+        $user = Auth::user();
+        $dinasList = Dinas::all(); // Mengambil semua data dinas
+
+        // Mengirim data user dan daftar dinas ke view
+        return view('Pelamar.Page.AjukanPelamar', [
+            'user' => $user,
+            'dinasList' => $dinasList
+        ]);
+    }
+
+    public function status_index()
     {
         $user = Auth::user();
 
-        // Mengirim data user ke view agar namanya bisa langsung ditampilkan di form
-        return view('Pelamar.Page.AjukanPelamar', ['user' => $user]);
+        return view('Pelamar.Page.StatusPelamar', ['user' => $user]);
+    }
+
+
+    /**
+     * Menampilkan form untuk membuat pendaftaran baru.
+     */
+    public function pendaftaran_create(Dinas $dinas)
+    {
+        return view('Pelamar.Page.FormPelamar', [
+            'user' => Auth::user(),
+            'dinas' => $dinas
+        ]);
     }
 }
