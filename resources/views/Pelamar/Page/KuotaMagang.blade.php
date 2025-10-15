@@ -5,7 +5,7 @@
 @push('styles')
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: #ffffff;
             font-family: 'Segoe UI', sans-serif;
         }
 

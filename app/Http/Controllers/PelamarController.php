@@ -19,9 +19,9 @@ class PelamarController extends Controller
     public function ajukan_index()
     {
         $user = Auth::user();
-        $dinasList = Dinas::all(); // Mengambil semua data dinas
+        // Mengambil semua data dinas beserta JUMLAH pendaftarannya
+        $dinasList = Dinas::withCount('pendaftarans')->get();
 
-        // Mengirim data user dan daftar dinas ke view
         return view('Pelamar.Page.AjukanPelamar', [
             'user' => $user,
             'dinasList' => $dinasList

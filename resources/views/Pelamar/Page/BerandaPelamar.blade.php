@@ -87,7 +87,7 @@
                         <p class="text-muted mb-0 small">Pilih dinas yang sesuai dengan minat, lengkapi data diri, upload
                             berkas dan cv serta dokumen pendukung.</p>
                     </div>
-                    <a href="#" class="btn btn-outline-primary ms-4"><i class="fas fa-paper-plane me-2"></i>Ajukan</a>
+                    <a href="{{ route('ajukanpelamar') }}" class="btn btn-outline-primary ms-4"><i class="fas fa-paper-plane me-2"></i>Ajukan</a>
                 </div>
 
                 <div class="flow-item">
@@ -96,7 +96,7 @@
                         <h6 class="fw-bold mb-1">Status Pendaftaran</h6>
                         <p class="text-muted mb-0 small">Lihat status pendaftaran setelah keputusan admin dinas.</p>
                     </div>
-                    <a href="#" class="btn btn-outline-info ms-4"><i class="fas fa-search me-2"></i>Lihat Status</a>
+                    <a href="{{ route('statuspelamar') }}" class="btn btn-outline-info ms-4"><i class="fas fa-search me-2"></i>Lihat Status</a>
                 </div>
 
                 <div class="flow-item">
@@ -105,7 +105,7 @@
                         <h6 class="fw-bold mb-1">Surat Balasan</h6>
                         <p class="text-muted mb-0 small">Cetak surat balasan dari dinas setelah di nyatakan diterima.</p>
                     </div>
-                    <a href="#" class="btn btn-outline-success ms-4"><i class="fas fa-print me-2"></i>Cetak Surat</a>
+                    <a href="{{ route('statuspelamar') }}" class="btn btn-outline-success ms-4"><i class="fas fa-print me-2"></i>Cetak Surat</a>
                 </div>
             </div>
         </main>

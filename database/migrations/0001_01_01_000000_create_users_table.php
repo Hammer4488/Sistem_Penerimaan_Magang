@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('role');
+            $table->enum('role', ['admin dinas', 'pelamar', 'super admin'])->default('pelamar');
             $table->rememberToken();
             $table->timestamps();
         });
@@ -27,9 +27,13 @@ return new class extends Migration
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });
-        
+
         Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id_user')->primary();
+            $table->string('id')->primary();
+
+            // Ini untuk melacak user yang login (opsional tapi standar)
+            $table->foreignId('user_id')->nullable()->index();
+
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');

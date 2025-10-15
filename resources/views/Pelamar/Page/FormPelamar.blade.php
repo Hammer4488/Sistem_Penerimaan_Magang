@@ -19,12 +19,12 @@
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
-                width: 60px;
-                height: 60px;
+                width: 120px;
+                height: 120px;
                 background-color: #e8f0fe;
                 color: #1a73e8;
                 border-radius: 50%;
-                font-size: 2rem;
+                font-size: 4rem;
                 margin-bottom: 1rem;
             }
 
@@ -49,7 +49,7 @@
                     <p class="text-muted">Daftar untuk mengikuti program magang di Pemerintah Kota</p>
                 </div>
 
-                <form action="#" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('pendaftaran.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="row g-3">
@@ -61,10 +61,7 @@
                             <label for="nim_nis" class="form-label">NIM/NIS</label>
                             <input type="text" class="form-control" id="nim_nis" name="nim_nis" required>
                         </div>
-                        <div class="col-12">
-                            <label for="alamat" class="form-label">Alamat</label>
-                            <textarea class="form-control" id="alamat" name="alamat" rows="2" required></textarea>
-                        </div>
+
                         <div class="col-md-6">
                             <label for="no_hp" class="form-label">No HP Aktif</label>
                             <input type="tel" class="form-control" id="no_hp" name="no_hp_aktif" required>
@@ -78,12 +75,16 @@
                             <input type="text" class="form-control" id="asal_sekolah" name="asal_sekolah" required>
                         </div>
                         <div class="col-12">
+                            <label for="alamat" class="form-label">Alamat</label>
+                            <textarea class="form-control" id="alamat" name="alamat" rows="2" required></textarea>
+                        </div>
+                        <div class="col-12">
                             <label for="pilih_divisi" class="form-label">Pilih Divisi</label>
                             <select class="form-select" id="pilih_divisi" name="id_dinas" required>
                                 <option selected disabled value="">Pilih...</option>
                                 {{-- Data dinas akan di-loop di sini --}}
-                                <option value="1">Diskominfotik</option>
-                                <option value="2">Dinas Pendidikan</option>
+                                <option value="1">Programmer</option>
+                                <option value="2">Jaringan</option>
                             </select>
                         </div>
                         <div class="col-12">

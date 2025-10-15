@@ -35,10 +35,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/ajukanpelamar', [PelamarController::class, 'ajukan_index'])->name('ajukanpelamar');
 
     // Rute untuk halaman Status Pendaftaran
-    Route::get('/statuspendaftaran', [PelamarController::class, 'status_index'])->name('statuspendaftaran.index');
+    Route::get('/statuspelamar', [PelamarController::class, 'status_index'])->name('statuspelamar');
 
     // Rute untuk proses pengajuan magang (CRUD Pendaftaran)
-    Route::get('/pendaftaran/create/{dinas}', [PelamarController::class, 'pendaftaran_create'])->name('pendaftaran.create');
+    Route::get('/pendaftaran/create', [PelamarController::class, 'pendaftaran_create'])->name('pendaftaran.create');
     Route::post('/pendaftaran', [PelamarController::class, 'store'])->name('pendaftaran.store');
 
 });
