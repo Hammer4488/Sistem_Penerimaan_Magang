@@ -131,7 +131,7 @@
                            <li class="nav-item">
                                {{-- V DIUBAH href dan kondisi active V --}}
                                <a class="nav-link {{ $active === 'statuspendaftaran' ? 'active' : '' }}"
-                                   href="{{ route('statuspelamar    ') }}">
+                                   href="{{ route('statuspelamar') }}">
                                    <i class="fas fa-tasks"></i>
                                    <span>Status Pendaftaran</span>
                                </a>

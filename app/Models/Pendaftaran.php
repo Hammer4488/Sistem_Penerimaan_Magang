@@ -9,6 +9,7 @@ class Pendaftaran extends Model
 {
     use HasFactory;
 
+    protected $table = 'pendaftaran'; // <-- TAMBAHKAN BARIS INI
     protected $primaryKey = 'id_pendaftaran';
 
     /**
@@ -19,15 +20,15 @@ class Pendaftaran extends Model
     protected $fillable = [
         'id_user',
         'id_dinas',
+        'id_divisi',
         'nama_lengkap',
-        'nim_nis',
+        'nis_nim',
         'alamat',
         'no_hp_aktif',
         'asal_sekolah_universitas',
-        'pilih_divisi',
         'jurusan_program_studi',
         'tanggal_mulai_magang',
-        'tanggal_berakhir_magang',
+        'tanggal_akhir_magang',
         'status',
     ];
 
@@ -42,5 +43,9 @@ class Pendaftaran extends Model
     public function dinas()
     {
         return $this->belongsTo(Dinas::class, 'id_dinas');
+    }
+    public function divisi()
+    {
+        return $this->belongsTo(Divisi::class, 'id_divisi');
     }
 }

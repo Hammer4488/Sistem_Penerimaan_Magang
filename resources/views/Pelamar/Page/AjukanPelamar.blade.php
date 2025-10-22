@@ -214,171 +214,80 @@
                 </ul>
             </div>
 
-                {{-- DINAS CARD CONTOH (Sama seperti di screenshot) --}}
+            {{-- DINAS CARD CONTOH (Sama seperti di screenshot) --}}
+            <div class="row">
+
                 <div class="row">
 
-<div class="row">
+                    @foreach ($dinasList as $dinas)
+                        <div class="col-lg-6 mb-4">
+                            <div class="card quota-card h-100">
+                                <div class="card-body p-4 position-relative">
 
-    {{-- Diskominfo --}}
-    <div class="col-lg-6 mb-4">
-        <div class="card quota-card">
-            {{-- ... (card-body tidak berubah) ... --}}
-            <div class="card-body p-4 position-relative">
-                <span class="badge bg-success position-absolute top-0 end-0 mt-3 me-3">Tersedia</span>
-                <h5 class="fw-bold">Diskominfo</h5>
-                <p class="text-muted small mb-2">Dinas Komunikasi, Informatika, dan Statistik Kota Banjarmasin</p>
-                <p class="card-text small">Dinas yang menangani bidang komunikasi, informatika, dan statistik daerah.</p>
-            </div>
-            <div class="card-footer bg-transparent border-0 p-4 pt-0">
-                {{-- ... (stat-box tidak berubah) ... --}}
-                <div class="row text-center g-2 mb-3">
-                    <div class="col-4">
-                        <div class="stat-box">
-                            <div class="number text-total">10</div>
-                            <div class="label">Total Kuota</div>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="stat-box">
-                            <div class="number text-terisi">5</div>
-                            <div class="label">Kuota Terisi</div>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="stat-box">
-                            <div class="number text-sisa">5</div>
-                            <div class="label">Sisa Kuota</div>
-                        </div>
-                    </div>
-                </div>
+                                    {{-- Badge dinamis --}}
+                                    @if ($dinas->total_kuota - $dinas->pendaftaran_count > 0)
+                                        <span
+                                            class="badge bg-success position-absolute top-0 end-0 mt-3 me-3">Tersedia</span>
+                                    @else
+                                        <span class="badge bg-danger position-absolute top-0 end-0 mt-3 me-3">Kuota
+                                            Terpenuhi</span>
+                                    @endif
 
-                <div class="mt-4">
-                    <a href="{{ route('pendaftaran.create', 1) }}" class="btn btn-primary w-100 fw-bold">Pilih Dinas Ini</a>
-                </div>
+                                    <h5 class="fw-bold">{{ $dinas->nama_dinas }}</h5>
+                                    <p class="text-muted small mb-1">{{ $dinas->nama_lengkap_dinas }}</p>
+                                    <p class="card-text small">{{ $dinas->deskripsi }}</p>
+                                </div>
 
-            </div>
-        </div>
-    </div>
+                                <div class="card-footer bg-transparent border-0 p-4 pt-0">
+                                    <div class="row text-center g-2 mb-3">
+                                        {{-- Statistik Kuota --}}
+                                        <div class="col-4">
+                                            <div class="stat-box">
+                                                <div class="number text-primary">{{ $dinas->total_kuota }}</div>
+                                                <div class="label">Total Kuota</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="stat-box">
+                                                <div class="number text-danger">{{ $dinas->pendaftaran_count }}</div>
+                                                <div class="label">Kuota Terisi</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="stat-box">
+                                                <div class="number text-success">
+                                                    {{ $dinas->total_kuota - $dinas->pendaftaran_count }}</div>
+                                                <div class="label">Sisa Kuota</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- Blok kode BARU dengan 3 kondisi --}}
+                                    <div class="mt-4">
+                                        @if (in_array($dinas->id_dinas, $pendaftaranPengguna))
+                                            {{-- Kondisi 1: Jika ID dinas ada di dalam riwayat pendaftaran pengguna --}}
+                                            <a href="#" class="btn btn-success w-100 fw-bold disabled"
+                                                style="opacity: 0.8;">
+                                                <i class="fas fa-check-circle me-2"></i> Sudah Diajukan
+                                            </a>
+                                        @elseif ($dinas->total_kuota - $dinas->pendaftaran_count <= 0)
+                                            {{-- Kondisi 2: Jika kuota habis (dan belum pernah diajukan) --}}
+                                            <a href="#" class="btn btn-secondary w-100 fw-bold disabled">
+                                                Kuota Penuh
+                                            </a>
+                                        @else
+                                            {{-- Kondisi 3: Jika kuota tersedia dan belum pernah diajukan --}}
+                                            <a href="{{ route('pendaftaran.create', $dinas) }}"
+                                                class="btn btn-primary w-100 fw-bold">
+                                                Pilih Dinas Ini
+                                            </a>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
 
-    {{-- Dinas Pendidikan --}}
-    <div class="col-lg-6 mb-4">
-        <div class="card quota-card">
-             {{-- ... (card-body tidak berubah) ... --}}
-            <div class="card-body p-4 position-relative">
-                <span class="badge bg-danger position-absolute top-0 end-0 mt-3 me-3">Kuota Terpenuhi</span>
-                <h5 class="fw-bold">Dinas Pendidikan</h5>
-                <p class="text-muted small mb-2">Dinas Pendidikan Kota Banjarmasin</p>
-                <p class="card-text small">Dinas yang menangani bidang pendidikan dasar, menengah, dan nonformal.</p>
-            </div>
-            <div class="card-footer bg-transparent border-0 p-4 pt-0">
-                 {{-- ... (stat-box tidak berubah) ... --}}
-                <div class="row text-center g-2 mb-3">
-                    <div class="col-4">
-                        <div class="stat-box">
-                            <div class="number text-total">10</div>
-                            <div class="label">Total Kuota</div>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="stat-box">
-                            <div class="number text-terisi">10</div>
-                            <div class="label">Kuota Terisi</div>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="stat-box">
-                            <div class="number text-sisa">0</div>
-                            <div class="label">Sisa Kuota</div>
-                        </div>
-                    </div>
                 </div>
-                <div class="mt-4">
-                    {{-- Tombol ini disabled, jadi href tidak perlu diubah --}}
-                    <a href="#" class="btn btn-secondary w-100 fw-bold disabled">Pilih Dinas Ini</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- PUPR --}}
-    <div class="col-lg-6 mb-4">
-        <div class="card quota-card">
-            {{-- ... (card-body tidak berubah) ... --}}
-            <div class="card-body p-4 position-relative">
-                <span class="badge bg-success position-absolute top-0 end-0 mt-3 me-3">Tersedia</span>
-                <h5 class="fw-bold">PUPR</h5>
-                <p class="text-muted small mb-2">Dinas Pekerjaan Umum dan Penataan Ruang</p>
-                <p class="card-text small">Dinas yang menangani pembangunan infrastruktur dan tata ruang kota.</p>
-            </div>
-            <div class="card-footer bg-transparent border-0 p-4 pt-0">
-                {{-- ... (stat-box tidak berubah) ... --}}
-                <div class="row text-center g-2 mb-3">
-                    <div class="col-4">
-                        <div class="stat-box">
-                            <div class="number text-total">10</div>
-                            <div class="label">Total Kuota</div>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="stat-box">
-                            <div class="number text-terisi">5</div>
-                            <div class="label">Kuota Terisi</div>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="stat-box">
-                            <div class="number text-sisa">5</div>
-                            <div class="label">Sisa Kuota</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <a href="{{ route('pendaftaran.create', 3) }}" class="btn btn-primary w-100 fw-bold">Pilih Dinas Ini</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- Lingkungan Hidup --}}
-    <div class="col-lg-6 mb-4">
-        <div class="card quota-card">
-            {{-- ... (card-body tidak berubah) ... --}}
-            <div class="card-body p-4 position-relative">
-                <span class="badge bg-success position-absolute top-0 end-0 mt-3 me-3">Tersedia</span>
-                <h5 class="fw-bold">Lingkungan Hidup</h5>
-                <p class="text-muted small mb-2">Dinas Lingkungan Hidup Kota Banjarmasin</p>
-                <p class="card-text small">Dinas yang menangani pengelolaan lingkungan, sampah, dan pengendalian pencemaran.</p>
-            </div>
-            <div class="card-footer bg-transparent border-0 p-4 pt-0">
-                {{-- ... (stat-box tidak berubah) ... --}}
-                <div class="row text-center g-2 mb-3">
-                    <div class="col-4">
-                        <div class="stat-box">
-                            <div class="number text-total">10</div>
-                            <div class="label">Total Kuota</div>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="stat-box">
-                            <div class="number text-terisi">5</div>
-                            <div class="label">Kuota Terisi</div>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="stat-box">
-                            <div class="number text-sisa">5</div>
-                            <div class="label">Sisa Kuota</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-4">
-                     <a href="{{ route('pendaftaran.create', 4) }}" class="btn btn-primary w-100 fw-bold">Pilih Dinas Ini</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
 
         </main>
     </div>

@@ -39,6 +39,10 @@
         .table td,
         .table th {
             vertical-align: middle;
+            padding-top: 1rem;
+            /* <-- TAMBAHKAN */
+            padding-bottom: 1rem;
+            /* <-- TAMBAHKAN */
         }
 
         .status-badge {
@@ -76,7 +80,7 @@
                 <h4 class="mb-1">Selamat Datang, {{ $user->name ?? 'Pelamar' }}!</h4>
                 <p class="text-muted mb-0">Berikut adalah riwayat dan status pendaftaran magang Anda.</p>
             </div> --}}
-              <x-welcome />
+            <x-welcome />
 
 
             <div class="status-card">
@@ -92,36 +96,48 @@
                                 <th scope="col">Surat Balasan</th>
                             </tr>
                         </thead>
+
                         <tbody>
-                            {{-- CONTOH DATA: DITOLAK --}}
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Diskominfotik</td>
-                                <td><a href="#" class="btn btn-dark btn-sm">Click disini</a></td>
-                                <td><span class="status-badge status-ditolak">Ditolak</span></td>
-                                <td>-</td>
-                            </tr>
+                            @forelse ($riwayatPendaftaran as $pendaftaran)
+                                <tr>
+                                    {{-- Nomor urut otomatis --}}
+                                    <th scope="row">{{ $loop->iteration }}</th>
 
-                            {{-- CONTOH DATA: DITERIMA --}}
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Dinas Pendidikan</td>
-                                <td><a href="#" class="btn btn-dark btn-sm">Click disini</a></td>
-                                <td><span class="status-badge status-diterima">Diterima</span></td>
-                                <td><a href="#" class="btn btn-primary btn-sm">Download</a></td>
-                            </tr>
+                                    {{-- Menampilkan nama dinas dari relasi --}}
+                                    <td>{{ $pendaftaran->dinas->nama_dinas ?? 'Dinas tidak ditemukan' }}</td>
 
-                            {{-- CONTOH DATA: DIPROSES --}}
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Dinas Lingkungan Hidup</td>
-                                <td><a href="#" class="btn btn-dark btn-sm">Click disini</a></td>
-                                <td><span class="status-badge status-diproses">Diproses</span></td>
-                                <td>-</td>
-                            </tr>
+                                    {{-- Tombol Detail Formulir (link bisa disesuaikan nanti) --}}
+                                    <td><a href="#" class="btn btn-dark btn-sm">Lihat Detail</a></td>
 
-                            {{-- Baris ini bisa Anda hapus/ganti dengan data dinamis dari database menggunakan @foreach --}}
+                                    {{-- Logika untuk menampilkan badge status yang sesuai --}}
+                                    <td>
+                                        @if ($pendaftaran->status == 'diterima')
+                                            <span class="status-badge status-diterima">Diterima</span>
+                                        @elseif ($pendaftaran->status == 'ditolak')
+                                            <span class="status-badge status-ditolak">Ditolak</span>
+                                        @else
+                                            <span class="status-badge status-diproses">Diproses</span>
+                                        @endif
+                                    </td>
+
+                                    {{-- Logika untuk tombol Surat Balasan --}}
+                                    <td>
+                                        @if ($pendaftaran->status == 'diterima')
+                                            <a href="#" class="btn btn-primary btn-sm">Download</a>
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">
+                                        Anda belum pernah mengajukan pendaftaran magang.
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
+
                     </table>
                 </div>
             </div>
