@@ -37,9 +37,13 @@ Route::middleware('auth')->group(function () {
     // Rute untuk halaman Status Pendaftaran
     Route::get('/statuspelamar', [PelamarController::class, 'status_index'])->name('statuspelamar');
 
-    // Rute untuk proses pengajuan magang (CRUD Pendaftaran)
+    
+    // Route::get('/pendaftaran/{pendaftaran}', [PelamarController::class, 'pendaftaran_show'])->name('pendaftaran.show');
+    Route::get('/pendaftaran/{pendaftaran}', [PelamarController::class, 'show'])->name('pendaftaran.show');
     Route::get('/pendaftaran/create/{dinas}', [PelamarController::class, 'pendaftaran_create'])->name('pendaftaran.create');
     Route::post('/pendaftaran', [PelamarController::class, 'store'])->name('pendaftaran.store');
+
+
 
     // Menampilkan daftar semua divisi (Read)
     Route::get('/divisi', [DivisiController::class, 'index'])->name('divisi.index');

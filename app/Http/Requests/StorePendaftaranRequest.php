@@ -37,14 +37,7 @@ class StorePendaftaranRequest extends FormRequest
         ];
     }
 
-    /**
-     * Tangani upaya validasi yang gagal.
-     *
-     * @param  \Illuminate\Contracts\Validation\Validator  $validator
-     * @return void
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
+
     protected function failedValidation(Validator $validator)
     {
         // [LOGGING] Catat kegagalan validasi ke dalam log

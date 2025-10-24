@@ -107,7 +107,11 @@
                                     <td>{{ $pendaftaran->dinas->nama_dinas ?? 'Dinas tidak ditemukan' }}</td>
 
                                     {{-- Tombol Detail Formulir (link bisa disesuaikan nanti) --}}
-                                    <td><a href="#" class="btn btn-dark btn-sm">Lihat Detail</a></td>
+                                    <td>
+                                        <a href="{{ route('pendaftaran.show', $pendaftaran) }}" class="btn btn-dark btn-sm">
+                                            Lihat Detail
+                                        </a>
+                                    </td>
 
                                     {{-- Logika untuk menampilkan badge status yang sesuai --}}
                                     <td>

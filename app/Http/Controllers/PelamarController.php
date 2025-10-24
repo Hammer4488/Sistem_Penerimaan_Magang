@@ -57,6 +57,24 @@ class PelamarController extends Controller
         ]);
     }
 
+    public function show(Pendaftaran $pendaftaran)
+    {
+        // Kebijakan keamanan: pastikan pendaftaran ini milik pengguna yang sedang login
+        if ($pendaftaran->id_user !== Auth::id()) { // <-- DIUBAH
+            abort(403, 'AKSES DITOLAK');
+        }
+
+        return view('Pelamar.Page.FormPelamar', [
+            'user'        => Auth::user(), // <-- DIUBAH
+            'dinas'       => $pendaftaran->dinas,
+            'divisiList'  => $pendaftaran->dinas->divisi,
+            'pendaftaran' => $pendaftaran, // Kirim data pendaftaran yang sudah ada
+            'mode'        => 'show' // Kirim variabel 'mode' untuk menandai ini halaman detail
+        ]);
+    }
+
+
+
 
     /**
      * Menampilkan form untuk membuat pendaftaran baru.
