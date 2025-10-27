@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany; // Import HasMany
 
 class Pendaftaran extends Model
 {
@@ -48,4 +49,10 @@ class Pendaftaran extends Model
     {
         return $this->belongsTo(Divisi::class, 'id_divisi');
     }
+
+    public function dokumen(): HasMany
+    {
+        return $this->hasMany(Dokumen::class, 'id_pendaftaran');
+    }
+    
 }

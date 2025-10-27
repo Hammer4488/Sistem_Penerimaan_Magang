@@ -134,18 +134,60 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="col-12">
-                                <label for="surat_pengantar" class="form-label">Surat Pengantar dari
-                                    Sekolah/Universitas</label>
-                                <input class="form-control" type="file" id="surat_pengantar" name="surat_pengantar"
-                                    required>
-                                <div class="form-text">Format yang diterima: JPG, PNG, PDF (Maksimal 2MB)</div>
-                            </div>
-                            <div class="col-12">
-                                <label for="cv" class="form-label">Curriculum Vitae (CV)</label>
-                                <input class="form-control" type="file" id="cv" name="cv" required>
-                                <div class="form-text">Format yang diterima: JPG, PNG, PDF (Maksimal 2MB)</div>
-                            </div>
+                            @if (isset($mode) && $mode == 'show')
+                                {{-- Mode Lihat Detail: Tampilkan link ke file yang sudah ada --}}
+                                @php
+                                    // Ambil dokumen dari relasi (lebih efisien jika di-load di controller)
+                                    $surat = $pendaftaran
+                                        ->dokumen()
+                                        ->where('jenis_dokumen', 'surat_pengantar')
+                                        ->first();
+                                    $cv = $pendaftaran->dokumen()->where('jenis_dokumen', 'cv')->first();
+                                @endphp
+
+                                <div class="col-12 mb-3">
+                                    <label class="form-label fw-bold">Surat Pengantar</label><br>
+                                    @if ($surat)
+                                        <a href="{{ asset('storage/' . $surat->path_file) }}" target="_blank"
+                                            class="btn btn-outline-secondary btn-sm">
+                                            <i class="fas fa-eye me-1"></i> Lihat File ({{ $surat->nama_file }})
+                                        </a>
+                                    @else
+                                        <span class="text-muted">File tidak ditemukan.</span>
+                                    @endif
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label class="form-label fw-bold">Curriculum Vitae (CV)</label><br>
+                                    @if ($cv)
+                                        <a href="{{ asset('storage/' . $cv->path_file) }}" target="_blank"
+                                            class="btn btn-outline-secondary btn-sm">
+                                            <i class="fas fa-eye me-1"></i> Lihat File ({{ $cv->nama_file }})
+                                        </a>
+                                    @else
+                                        <span class="text-muted">File tidak ditemukan.</span>
+                                    @endif
+                                </div>
+                            @else
+                                {{-- Mode Buat Baru: Tampilkan input file --}}
+                                <div class="col-12">
+                                    <label for="surat_pengantar" class="form-label">Surat Pengantar</label>
+                                    <input class="form-control @error('surat_pengantar') is-invalid @enderror"
+                                        type="file" name="surat_pengantar" required>
+                                    @error('surat_pengantar')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <div class="form-text">Format: PDF, JPG, PNG (Maks. 2MB)</div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="cv" class="form-label">Curriculum Vitae (CV)</label>
+                                    <input class="form-control @error('cv') is-invalid @enderror" type="file"
+                                        name="cv" required>
+                                    @error('cv')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <div class="form-text">Format: PDF, JPG, PNG (Maks. 2MB)</div>
+                                </div>
+                            @endif
                             <div class="col-md-6">
                                 <label for="tanggal_mulai_magang" class="form-label">Tanggal Mulai Magang</label>
                                 <input type="date" class="form-control" name="tanggal_mulai_magang"

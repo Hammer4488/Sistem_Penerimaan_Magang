@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dinas;
-use Illuminate\Support\Facades\Log;
+use App\Models\Dokumen; // [BARU] Import model Dokumen
 use App\Models\Pendaftaran; // <-- TAMBAHKAN INI
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StorePendaftaranRequest;
 use Illuminate\Support\Facades\Validator; // 1. Import Validator
 use Illuminate\Support\Facades\Auth; // <-- Penting untuk mengambil data user
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage; // [BARU] Import Storage
+use Illuminate\Support\Facades\DB; // <-- Tambahkan ini
 
 class PelamarController extends Controller
 {
@@ -64,6 +67,10 @@ class PelamarController extends Controller
             abort(403, 'AKSES DITOLAK');
         }
 
+        $pendaftaran->load('dinas.divisi', 'dokumen');
+
+
+
         return view('Pelamar.Page.FormPelamar', [
             'user'        => Auth::user(), // <-- DIUBAH
             'dinas'       => $pendaftaran->dinas,
@@ -72,10 +79,6 @@ class PelamarController extends Controller
             'mode'        => 'show' // Kirim variabel 'mode' untuk menandai ini halaman detail
         ]);
     }
-
-
-
-
     /**
      * Menampilkan form untuk membuat pendaftaran baru.
      */
@@ -95,19 +98,49 @@ class PelamarController extends Controller
 
     public function store(StorePendaftaranRequest $request)
     {
+        DB::beginTransaction();
         try {
-            // Langsung ambil data yang sudah dijamin valid
+
             $validatedData = $request->validated();
 
-            // Simpan data ke database
-            // [PERBAIKAN] Menggabungkan id_user dengan data tervalidasi
-            Pendaftaran::create(array_merge(
+            $pendaftaran = Pendaftaran::create(array_merge(
                 ['id_user' => Auth::id()],
-                $validatedData
+                collect($validatedData)->except(['surat_pengantar', 'cv'])->all()
             ));
+
+            if ($request->hasFile('surat_pengantar')) {
+                $file = $request->file('surat_pengantar');
+                $namaFileAsli = $file->getClientOriginalName();
+                // Simpan file ke 'storage/app/public/dokumen_surat' dengan nama unik
+                $pathFile = $file->store('dokumen_surat', 'public');
+
+                Dokumen::create([
+                    'id_pendaftaran' => $pendaftaran->id_pendaftaran, // Gunakan ID dari pendaftaran yg baru dibuat
+                    'jenis_dokumen'  => 'surat_pengantar',
+                    'path_file'      => $pathFile,
+                    'nama_file' => $namaFileAsli,
+                ]);
+            }
+
+            // 3. Proses upload dan simpan CV
+            if ($request->hasFile('cv')) {
+                $file = $request->file('cv');
+                $namaFileAsli = $file->getClientOriginalName();
+                // Simpan file ke 'storage/app/public/dokumen_cv' dengan nama unik
+                $pathFile = $file->store('dokumen_cv', 'public');
+
+                Dokumen::create([
+                    'id_pendaftaran' => $pendaftaran->id_pendaftaran, // Gunakan ID dari pendaftaran yg baru dibuat
+                    'jenis_dokumen'  => 'cv',
+                    'path_file'      => $pathFile,
+                    'nama_file' => $namaFileAsli,
+                ]);
+            }
+            DB::commit();
 
             return redirect()->route('statuspelamar')->with('success', 'Pendaftaran Anda berhasil diajukan!');
         } catch (\Exception $e) {
+            DB::rollBack();
             Log::error('Gagal menyimpan pendaftaran ke database.', [
                 'error_message' => $e->getMessage(),
                 'user_id'       => Auth::id(),

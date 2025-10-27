@@ -27,13 +27,15 @@ class StorePendaftaranRequest extends FormRequest
             'id_dinas'        => 'required|exists:dinas,id_dinas',
             'id_divisi'       => 'required|exists:divisi,id_divisi',
             'nama_lengkap'    => 'required|string|max:255',
-            'nis_nim'         => 'required|string|max:20|unique:pendaftaran,nis_nim',
+            'nis_nim'         => 'required|string|max:20',
             'alamat'          => 'required|string',
             'no_hp_aktif'     => 'required|string|max:20',
             'asal_sekolah_universitas'    => 'required|string|max:255',
             'jurusan_program_studi'         => 'required|string|max:255',
             'tanggal_mulai_magang'   => 'required|date',
             'tanggal_akhir_magang'   => 'required|date|after:tanggal_mulai',
+            'surat_pengantar' => 'required|file|mimes:pdf,jpg,png|max:2048', // Maks 2MB, tipe PDF/JPG/PNG
+            'cv'              => 'required|file|mimes:pdf,jpg,png|max:2048', // Maks 2MB, tipe PDF/JPG/PNG
         ];
     }
 
