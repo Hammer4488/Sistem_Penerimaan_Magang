@@ -23,17 +23,28 @@ class StorePendaftaranRequest extends FormRequest
      */
     public function rules(): array
     {
+        $jumlahAnggotaDiminta = $this->input('jumlah_anggota', 1);
+
         return [
-            'id_dinas'        => 'required|exists:dinas,id_dinas',
-            'id_divisi'       => 'required|exists:divisi,id_divisi',
-            'nama_lengkap'    => 'required|string|max:255',
-            'nis_nim'         => 'required|string|max:20',
-            'alamat'          => 'required|string',
-            'no_hp_aktif'     => 'required|string|max:20',
-            'asal_sekolah_universitas'    => 'required|string|max:255',
-            'jurusan_program_studi'         => 'required|string|max:255',
+            'id_dinas'               => 'required|exists:dinas,id_dinas',
+            'id_divisi'              => 'required|exists:divisi,id_divisi', // Hanya perlu satu untuk kelompok
+
+            'nama_lengkap'           => 'required|array|min:' . $jumlahAnggotaDiminta, // Pastikan jumlah array sesuai
+            'nama_lengkap.*'         => 'required|string|max:255',                  // Validasi per item
+            'nis_nim'                => 'required|array|min:' . $jumlahAnggotaDiminta,
+            'nis_nim.*'              => 'required|string|max:20|distinct|unique:pendaftaran,nis_nim', // `distinct` antar input, `unique` di DB
+            'alamat'                 => 'required|array|min:' . $jumlahAnggotaDiminta,
+            'alamat.*'               => 'required|string',
+            'no_hp_aktif'            => 'required|array|min:' . $jumlahAnggotaDiminta,
+            'no_hp_aktif.*'          => 'required|string|max:20',
+            'asal_sekolah_universitas' => 'required|array|min:' . $jumlahAnggotaDiminta,
+            'asal_sekolah_universitas.*' => 'required|string|max:255',
+            'jurusan_program_studi'  => 'required|array|min:' . $jumlahAnggotaDiminta,
+            'jurusan_program_studi.*'  => 'required|string|max:255',
+
             'tanggal_mulai_magang'   => 'required|date',
             'tanggal_akhir_magang'   => 'required|date|after:tanggal_mulai',
+            'keterangan_status' => 'nullable|string',
             'surat_pengantar' => 'required|file|mimes:pdf,jpg,png|max:2048', // Maks 2MB, tipe PDF/JPG/PNG
             'cv'              => 'required|file|mimes:pdf,jpg,png|max:2048', // Maks 2MB, tipe PDF/JPG/PNG
         ];

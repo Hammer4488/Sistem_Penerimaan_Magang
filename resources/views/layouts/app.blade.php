@@ -15,7 +15,7 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #ffffff;
+            background-color: #f4f7f6;
         }
     </style>
     @stack('styles')
@@ -26,6 +26,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+    <script>
+      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+      })
+    </script>
+
     @stack('scripts')
+    
 </body>
 </html>

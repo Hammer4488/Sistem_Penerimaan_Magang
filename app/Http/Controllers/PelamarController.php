@@ -43,7 +43,7 @@ class PelamarController extends Controller
         ]);
     }
 
-    public function status_index()
+    public function riwayat_index()
     {
         $user = Auth::user();
 
@@ -54,7 +54,7 @@ class PelamarController extends Controller
             ->get();
 
         // 2. Kirim SEMUA data yang dibutuhkan ke view dalam SATU kali return
-        return view('Pelamar.Page.StatusPelamar', [
+        return view('Pelamar.Page.RiwayatPelamar', [
             'user'               => $user,
             'riwayatPendaftaran' => $riwayatPendaftaran // Variabel ini sekarang ikut terkirim
         ]);
@@ -84,30 +84,66 @@ class PelamarController extends Controller
      */
     // app/Http-Controllers/PelamarController.php
 
-    public function pendaftaran_create(Dinas $dinas)
+    public function pendaftaran_create(Request $request,Dinas $dinas)
     {
         // Mengambil semua divisi yang dimiliki oleh dinas yang dipilih
         $divisiList = $dinas->divisi;
 
+        $jumlahAnggota = $request->query('jumlah', 1);
+
         return view('Pelamar.Page.FormPelamar', [
             'user'       => Auth::user(),
             'dinas'      => $dinas,
-            'divisiList' => $divisiList // <-- KIRIM DATA DIVISI KE VIEW
+            'divisiList' => $divisiList, // <-- KIRIM DATA DIVISI KE VIEW
+            'jumlahAnggota' => $jumlahAnggota // Kirim jumlah anggota ke view
         ]);
     }
 
     public function store(StorePendaftaranRequest $request)
     {
-        DB::beginTransaction();
+DB::beginTransaction();
+        
         try {
-
+            // Ambil semua data yang sudah divalidasi
             $validatedData = $request->validated();
 
-            $pendaftaran = Pendaftaran::create(array_merge(
-                ['id_user' => Auth::id()],
-                collect($validatedData)->except(['surat_pengantar', 'cv'])->all()
-            ));
+            // Hitung ada berapa anggota yang didaftarkan (berdasarkan jumlah 'nama_lengkap')
+            $jumlahAnggota = count($validatedData['nama_lengkap']);
+            $pendaftaranUtamaId = null; // Untuk menyimpan ID pendaftaran ketua (anggota pertama)
 
+            // --- Mulai Looping ---
+            // Lakukan perulangan sebanyak jumlah anggota
+            for ($i = 0; $i < $jumlahAnggota; $i++) {
+                
+                // Buat record pendaftaran BARU untuk setiap anggota
+                $pendaftaran = Pendaftaran::create([
+                    // Data ini sama untuk semua anggota dalam kelompok
+                    'id_user'                 => Auth::id(), 
+                    'id_dinas'                => $validatedData['id_dinas'],
+                    'id_divisi'               => $validatedData['id_divisi'], 
+                    'tanggal_mulai_magang'    => $validatedData['tanggal_mulai_magang'],
+                    'tanggal_akhir_magang'  => $validatedData['tanggal_akhir_magang'],
+                    
+                    // Data ini spesifik per anggota, diambil dari array menggunakan index [$i]
+                    'nama_lengkap'              => $validatedData['nama_lengkap'][$i],
+                    'nis_nim'                 => $validatedData['nis_nim'][$i],
+                    'alamat'                  => $validatedData['alamat'][$i], 
+                    'no_hp_aktif'             => $validatedData['no_hp_aktif'][$i], 
+                    'asal_sekolah_universitas'  => $validatedData['asal_sekolah_universitas'][$i],
+                    'jurusan_program_studi'   => $validatedData['jurusan_program_studi'][$i],
+                ]);
+
+                // Simpan ID pendaftaran anggota pertama (ketua)
+                // Dokumen akan dikaitkan dengan ID ini
+                if ($i == 0) {
+                    $pendaftaranUtamaId = $pendaftaran->id_pendaftaran;
+                }
+
+                // Periksa jika pendaftaran gagal dibuat
+                if (!$pendaftaran) {
+                    throw new \Exception("Gagal membuat data pendaftaran untuk anggota ke-" . ($i+1));
+                }
+            }
             if ($request->hasFile('surat_pengantar')) {
                 $file = $request->file('surat_pengantar');
                 $namaFileAsli = $file->getClientOriginalName();
@@ -138,7 +174,11 @@ class PelamarController extends Controller
             }
             DB::commit();
 
-            return redirect()->route('statuspelamar')->with('success', 'Pendaftaran Anda berhasil diajukan!');
+            return redirect()->route('riwayatpelamar')->with('success', 'Pendaftaran Anda berhasil diajukan!');
+
+
+
+
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Gagal menyimpan pendaftaran ke database.', [

@@ -4,10 +4,10 @@
 
 @push('styles')
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f4f7f6;
-        }
+        /* body {
+                            font-family: 'Poppins', sans-serif;
+                            background-color: #FF0000;
+                        } */
 
         .main-content {
             margin-left: 300px;
@@ -275,9 +275,9 @@
                                                 Kuota Penuh
                                             </a>
                                         @else
-                                            {{-- Kondisi 3: Jika kuota tersedia dan belum pernah diajukan --}}
-                                            <a href="{{ route('pendaftaran.create', $dinas) }}"
-                                                class="btn btn-primary w-100 fw-bold">
+                                            <a href="#" class="btn btn-primary w-100 fw-bold" data-bs-toggle="modal"
+                                                data-bs-target="#pilihJenisPendaftaranModal" {{-- Simpan URL form asli di data-* attribute --}}
+                                                data-dinas-url="{{ route('pendaftaran.create', $dinas) }}">
                                                 Pilih Dinas Ini
                                             </a>
                                         @endif
@@ -286,9 +286,99 @@
                             </div>
                         </div>
                     @endforeach
-
                 </div>
-
         </main>
     </div>
+
+    {{-- [BARU] Modal untuk Memilih Jenis Pendaftaran --}}
+    <div class="modal fade" id="pilihJenisPendaftaranModal" tabindex="-1" aria-labelledby="pilihJenisModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pilihJenisModalLabel">Pilih Jenis Pendaftaran</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Anda akan mendaftar untuk diri sendiri atau mewakili kelompok?</p>
+
+                    {{-- Tombol Pilihan --}}
+                    <div class="d-grid gap-2">
+                        {{-- Tombol Individu --}}
+                        <a href="#" id="lanjutkanIndividuBtn" class="btn btn-outline-primary">
+                            <i class="fas fa-user me-2"></i> Daftar Sebagai Individu
+                        </a>
+
+                        {{-- Tombol Kelompok (Contoh untuk maks 4 orang) --}}
+                        {{-- Anda bisa buat dropdown atau beberapa tombol seperti ini --}}
+                        <a href="#" id="lanjutkanKelompok2Btn" class="btn btn-outline-info">
+                            <i class="fas fa-users me-2"></i> Daftar Sebagai Kelompok (2 Orang)
+                        </a>
+                        <a href="#" id="lanjutkanKelompok3Btn" class="btn btn-outline-info">
+                            <i class="fas fa-users me-2"></i> Daftar Sebagai Kelompok (3 Orang)
+                        </a>
+                        <a href="#" id="lanjutkanKelompok4Btn" class="btn btn-outline-info">
+                            <i class="fas fa-users me-2"></i> Daftar Sebagai Kelompok (4 Orang)
+                        </a>
+                    </div>
+
+                    {{-- Simpan URL target dinas di sini (akan diisi oleh JS) --}}
+                    <input type="hidden" id="modalTargetUrl">
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- Akhir Modal --}}
+
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var pilihJenisModal = document.getElementById('pilihJenisPendaftaranModal');
+        var modalTargetUrlInput = document.getElementById('modalTargetUrl');
+        var btnIndividu = document.getElementById('lanjutkanIndividuBtn');
+        var btnKelompok2 = document.getElementById('lanjutkanKelompok2Btn');
+        var btnKelompok3 = document.getElementById('lanjutkanKelompok3Btn');
+        var btnKelompok4 = document.getElementById('lanjutkanKelompok4Btn');
+
+        if (pilihJenisModal) {
+            // Saat modal akan ditampilkan
+            pilihJenisModal.addEventListener('show.bs.modal', function (event) {
+                // Tombol "Pilih Dinas Ini" yang diklik
+                var button = event.relatedTarget; 
+                // Ambil URL form dari tombol
+                var targetUrl = button.getAttribute('data-dinas-url');
+                // Simpan URL di input hidden dalam modal
+                modalTargetUrlInput.value = targetUrl; 
+            });
+
+            // Fungsi untuk navigasi ke form dengan parameter jumlah
+            function navigateToForm(jumlah) {
+                var baseUrl = modalTargetUrlInput.value;
+                // Tambahkan query parameter ?jumlah=... ke URL
+                var finalUrl = baseUrl + '?jumlah=' + jumlah; 
+                window.location.href = finalUrl; // Arahkan pengguna
+            }
+
+            // Tambahkan event listener ke tombol-tombol di dalam modal
+            btnIndividu.addEventListener('click', function(e) {
+                e.preventDefault(); // Mencegah link default
+                navigateToForm(1);
+            });
+            btnKelompok2.addEventListener('click', function(e) {
+                e.preventDefault();
+                navigateToForm(2);
+            });
+             btnKelompok3.addEventListener('click', function(e) {
+                e.preventDefault();
+                navigateToForm(3);
+            });
+             btnKelompok4.addEventListener('click', function(e) {
+                e.preventDefault();
+                navigateToForm(4);
+            });
+        }
+    });
+</script>
+@endpush

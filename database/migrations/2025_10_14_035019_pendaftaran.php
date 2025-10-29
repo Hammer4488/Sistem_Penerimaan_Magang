@@ -18,20 +18,18 @@ return new class extends Migration
             $table->foreignId('id_divisi')->constrained('divisi', 'id_divisi');
             $table->string('nama_lengkap');
             $table->string('nis_nim', 20);
-            $table->string('alamat');
+            $table->text('alamat');
             $table->string('no_hp_aktif');
             $table->string('asal_sekolah_universitas');
             $table->string('jurusan_program_studi');
             $table->date('tanggal_mulai_magang');
             $table->date('tanggal_akhir_magang');
+            $table->text('keterangan_status')->nullable();
             $table->enum('status', ['diproses', 'diterima', 'ditolak', 'selesai'])->default('diproses');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('pendaftaran');

@@ -5,7 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\PelamarController;
 use App\Http\Controllers\PendaftaranController;
-use App\Http\Controllers\StatusPendaftaranController;
+use App\Http\Controllers\RiwayatPendaftaranController;
 use App\Http\Controllers\DivisiController;
 /*
 |--------------------------------------------------------------------------
@@ -29,16 +29,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // --- Rute Pelamar (Wajib Login) ---
 Route::middleware('auth')->group(function () {
     
-    // Rute untuk halaman Beranda Pelamar
     Route::get('/dashboard', [PelamarController::class, 'beranda_index'])->name('berandapelamar');
-
     Route::get('/ajukanpelamar', [PelamarController::class, 'ajukan_index'])->name('ajukanpelamar');
+    Route::get('/riwayatpelamar', [PelamarController::class, 'riwayat_index'])->name('riwayatpelamar');
 
-    // Rute untuk halaman Status Pendaftaran
-    Route::get('/statuspelamar', [PelamarController::class, 'status_index'])->name('statuspelamar');
 
-    
-    // Route::get('/pendaftaran/{pendaftaran}', [PelamarController::class, 'pendaftaran_show'])->name('pendaftaran.show');
     Route::get('/pendaftaran/{pendaftaran}', [PelamarController::class, 'show'])->name('pendaftaran.show');
     Route::get('/pendaftaran/create/{dinas}', [PelamarController::class, 'pendaftaran_create'])->name('pendaftaran.create');
     Route::post('/pendaftaran', [PelamarController::class, 'store'])->name('pendaftaran.store');

@@ -4,10 +4,11 @@
 
 @push('styles')
     <style>
-        body {
+        /* body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f4f7f6;
-        }
+            background-color: #FF0000;
+        } */
+
         .main-content {
             margin-left: 300px;
             /* Sesuaikan dengan lebar sidebar */
@@ -72,7 +73,7 @@
                 <h4 class="mb-1">Selamat Datang, {{ $user->name }}!</h4>
                 <p class="text-muted mb-0">Kelola pendaftaran magang anda di Pemerintah Kota Banjarmasin</p>
             </div> --}}
-              <x-welcome />
+            <x-welcome />
 
 
             <div class="flow-card">
@@ -87,16 +88,18 @@
                         <p class="text-muted mb-0 small">Pilih dinas yang sesuai dengan minat, lengkapi data diri, upload
                             berkas dan cv serta dokumen pendukung.</p>
                     </div>
-                    <a href="{{ route('ajukanpelamar') }}" class="btn btn-outline-primary ms-4"><i class="fas fa-paper-plane me-2"></i>Ajukan</a>
+                    <a href="{{ route('ajukanpelamar') }}" class="btn btn-outline-primary ms-4"><i
+                            class="fas fa-paper-plane me-2"></i>Ajukan</a>
                 </div>
 
                 <div class="flow-item">
                     <div class="flow-number">2</div>
                     <div class="me-auto">
-                        <h6 class="fw-bold mb-1">Status Pendaftaran</h6>
+                        <h6 class="fw-bold mb-1">Riwayat Pendaftaran</h6>
                         <p class="text-muted mb-0 small">Lihat status pendaftaran setelah keputusan admin dinas.</p>
                     </div>
-                    <a href="{{ route('statuspelamar') }}" class="btn btn-outline-info ms-4"><i class="fas fa-search me-2"></i>Lihat Status</a>
+                    <a href="{{ route('riwayatpelamar') }}" class="btn btn-outline-info ms-4"><i
+                            class="fas fa-search me-2"></i>Lihat Riwayat</a>
                 </div>
 
                 <div class="flow-item">
@@ -105,7 +108,8 @@
                         <h6 class="fw-bold mb-1">Surat Balasan</h6>
                         <p class="text-muted mb-0 small">Cetak surat balasan dari dinas setelah di nyatakan diterima.</p>
                     </div>
-                    <a href="{{ route('statuspelamar') }}" class="btn btn-outline-success ms-4"><i class="fas fa-print me-2"></i>Cetak Surat</a>
+                    <a href="{{ route('riwayatpelamar') }}" class="btn btn-outline-success ms-4"><i
+                            class="fas fa-print me-2"></i>Cetak Surat</a>
                 </div>
             </div>
         </main>
