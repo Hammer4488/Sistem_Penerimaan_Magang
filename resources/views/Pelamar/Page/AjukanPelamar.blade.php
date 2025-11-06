@@ -5,9 +5,9 @@
 @push('styles')
     <style>
         /* body {
-                            font-family: 'Poppins', sans-serif;
-                            background-color: #FF0000;
-                        } */
+                                                                        font-family: 'Poppins', sans-serif;
+                                                                        background-color: #FF0000;
+                                                                    } */
 
         .main-content {
             margin-left: 300px;
@@ -18,32 +18,22 @@
             padding: 30px;
         }
 
-        /* == STYLE UNTUK KOTAK SELAMAT DATANG == */
-        /* == STYLE UNTUK KOTAK SELAMAT DATANG == */
+
         .welcome-card {
             background-color: #ffffff;
             border-radius: 12px;
             padding: 25px;
             margin-bottom: 25px;
             border: 1px solid #dee2e6;
-            /* Menambahkan garis batas tipis */
             box-shadow: none;
-            /* Menghapus efek bayangan */
+
         }
 
-        /* == AKHIR STYLE KOTAK SELAMAT DATANG == */
-
-        /* == STYLE UNTUK INFORMASI PENDAFTARAN MAGANG (ALERT) == */
-        /* == STYLE UNTUK INFORMASI PENDAFTARAN MAGANG (ALERT) == */
         .info-magang-alert {
             background-color: #ffffff;
-            /* <-- DIUBAH dari biru muda ke putih */
             border: 1px solid #e0e0e0;
-            /* <-- DITAMBAHKAN border abu-abu standar */
             color: #2c3e50;
-            /* <-- DIUBAH dari biru tua ke warna teks standar */
             padding: 25px;
-            /* <-- DIUBAH agar padding konsisten */
             border-radius: 12px;
             margin-bottom: 25px;
         }
@@ -52,12 +42,9 @@
             font-weight: 600;
             margin-bottom: 15px;
             display: flex;
-            /* <-- DITAMBAHKAN untuk alignment icon dan teks */
             align-items: center;
-            /* <-- DITAMBAHKAN untuk alignment icon dan teks */
         }
 
-        /* V DITAMBAHKAN BLOK BARU V */
         .info-magang-alert h5 i {
             color: #2c3e50;
             font-size: 1.8rem;
@@ -73,13 +60,9 @@
         .info-magang-alert ul li {
             position: relative;
             padding-left: 20px;
-            /* <-- DIUBAH untuk menyesuaikan bullet point baru */
             margin-bottom: 10px;
-            /* <-- DIUBAH untuk memberi jarak lebih */
             color: #555;
-            /* <-- DITAMBAHKAN warna teks lebih terang */
             font-size: 0.95rem;
-            /* <-- DITAMBAHKAN agar tulisan sedikit lebih kecil */
         }
 
         .info-magang-alert ul li:last-child {
@@ -88,31 +71,15 @@
 
         .info-magang-alert ul li::before {
             content: '';
-            /* <-- DIUBAH dari kode Font Awesome */
             position: absolute;
             left: 0;
             top: 7px;
-            /* <-- DIUBAH untuk posisi vertikal */
-
-            /* V DITAMBAHKAN BLOK BARU UNTUK MENGGAMBAR LINGKARAN V */
             width: 8px;
             height: 8px;
             background-color: #2c3e50;
             border-radius: 50%;
-
-            /* V DIHAPUS properti Font Awesome V */
-            /* font-family: "Font Awesome 5 Free"; */
-            /* font-weight: 900; */
-            /* color: #3498db; */
         }
 
-        /* == AKHIR STYLE INFORMASI PENDAFTARAN MAGANG == */
-
-
-        /* == STYLE KARTU DINAS == */
-        /* V TAMBAHKAN SEMUA BLOK DI BAWAH INI V */
-
-        /* V TAMBAHKAN KELAS UTAMA INI V */
         .custom-card {
             background-color: #ffffff;
             border-radius: 12px;
@@ -123,7 +90,6 @@
             transition: all 0.3s ease-in-out;
         }
 
-        /* Perbarui kelas yang sudah ada */
         .quota-card {
             border-radius: 0.75rem;
             transition: all 0.3s ease-in-out;
@@ -137,19 +103,15 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
         }
 
-        /* V TAMBAHKAN BLOK BARU INI V */
         .quota-card .btn {
             border-radius: 0.5rem;
-            /* Menyamakan lengkungan sudut dengan stat-box */
             font-size: 1rem;
             padding: 0.75rem 0;
-            /* Membuat tombol sedikit lebih tebal */
             transition: all 0.2s ease-in-out;
         }
 
         .quota-card .btn:hover {
             transform: scale(1.02);
-            /* Sedikit efek membesar saat disentuh */
         }
 
         .stat-box {
@@ -169,30 +131,31 @@
             color: #6c757d;
         }
 
-        /* V TAMBAHKAN BLOK BARU INI V */
+
         .stat-box .text-total {
             color: #0d6efd;
-            /* Biru */
+
         }
 
         .stat-box .text-terisi {
             color: #dc3545;
-            /* Merah */
         }
 
         .stat-box .text-sisa {
             color: #198754;
-            /* Hijau */
+
         }
 
-
-
-        /* == AKHIR STYLE KARTU DINAS == */
+        .modal-icon-error {
+            font-size: 3rem;
+            color: #dc3545;
+            /* Warna merah Bootstrap */
+        }
     </style>
 @endpush
 
 @section('content')
-    <x-sidebar active="ajukanpelamar" /> {{-- Menggunakan 'ajukanmagang' sebagai penanda aktif --}}
+    <x-sidebar active="ajukanpelamar" />
 
 
     <div class="main-content">
@@ -220,12 +183,15 @@
                 <div class="row">
 
                     @foreach ($dinasList as $dinas)
+                        @php
+                            $sisaKuota = $dinas->total_kuota - $dinas->pendaftaran_count;
+                        @endphp
                         <div class="col-lg-6 mb-4">
                             <div class="card quota-card h-100">
                                 <div class="card-body p-4 position-relative">
 
                                     {{-- Badge dinamis --}}
-                                    @if ($dinas->total_kuota - $dinas->pendaftaran_count > 0)
+                                    @if ($sisaKuota > 0)
                                         <span
                                             class="badge bg-success position-absolute top-0 end-0 mt-3 me-3">Tersedia</span>
                                     @else
@@ -256,7 +222,7 @@
                                         <div class="col-4">
                                             <div class="stat-box">
                                                 <div class="number text-success">
-                                                    {{ $dinas->total_kuota - $dinas->pendaftaran_count }}</div>
+                                                    {{ $sisaKuota }}</div>
                                                 <div class="label">Sisa Kuota</div>
                                             </div>
                                         </div>
@@ -265,19 +231,19 @@
                                     <div class="mt-4">
                                         @if (in_array($dinas->id_dinas, $pendaftaranPengguna))
                                             {{-- Kondisi 1: Jika ID dinas ada di dalam riwayat pendaftaran pengguna --}}
-                                            <a href="#" class="btn btn-success w-100 fw-bold disabled"
+                                            <a href ="#" class="btn btn-success w-100 fw-bold disabled"
                                                 style="opacity: 0.8;">
                                                 <i class="fas fa-check-circle me-2"></i> Sudah Diajukan
                                             </a>
-                                        @elseif ($dinas->total_kuota - $dinas->pendaftaran_count <= 0)
-                                            {{-- Kondisi 2: Jika kuota habis (dan belum pernah diajukan) --}}
+                                        @elseif ($sisaKuota <= 0)
                                             <a href="#" class="btn btn-secondary w-100 fw-bold disabled">
                                                 Kuota Penuh
                                             </a>
                                         @else
                                             <a href="#" class="btn btn-primary w-100 fw-bold" data-bs-toggle="modal"
-                                                data-bs-target="#pilihJenisPendaftaranModal" {{-- Simpan URL form asli di data-* attribute --}}
-                                                data-dinas-url="{{ route('pendaftaran.create', $dinas) }}">
+                                                data-bs-target="#pilihJenisPendaftaranModal"
+                                                data-dinas-url="{{ route('pendaftaran.create', $dinas) }}"
+                                                data-sisa-kuota="{{ $sisaKuota }}">
                                                 Pilih Dinas Ini
                                             </a>
                                         @endif
@@ -301,16 +267,10 @@
                 </div>
                 <div class="modal-body">
                     <p>Anda akan mendaftar untuk diri sendiri atau mewakili kelompok?</p>
-
-                    {{-- Tombol Pilihan --}}
                     <div class="d-grid gap-2">
-                        {{-- Tombol Individu --}}
                         <a href="#" id="lanjutkanIndividuBtn" class="btn btn-outline-primary">
                             <i class="fas fa-user me-2"></i> Daftar Sebagai Individu
                         </a>
-
-                        {{-- Tombol Kelompok (Contoh untuk maks 4 orang) --}}
-                        {{-- Anda bisa buat dropdown atau beberapa tombol seperti ini --}}
                         <a href="#" id="lanjutkanKelompok2Btn" class="btn btn-outline-info">
                             <i class="fas fa-users me-2"></i> Daftar Sebagai Kelompok (2 Orang)
                         </a>
@@ -330,55 +290,80 @@
     </div>
     {{-- Akhir Modal --}}
 
+    <div class="modal fade" id="kuotaTidakCukupModal" tabindex="-1" aria-labelledby="kuotaErrorModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center p-4 border-0 shadow-lg" style="border-radius: 15px;">
+                <div class="modal-body">
+                    <p><i class="fas fa-times-circle modal-icon-error mb-3"></i></p>
+                    <h5 class="modal-title mb-3" id="kuotaErrorModalLabel">Pendaftaran Gagal</h5>
+                    <p id="kuotaErrorMessage" class="text-muted mb-4"></p>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var pilihJenisModal = document.getElementById('pilihJenisPendaftaranModal');
-        var modalTargetUrlInput = document.getElementById('modalTargetUrl');
-        var btnIndividu = document.getElementById('lanjutkanIndividuBtn');
-        var btnKelompok2 = document.getElementById('lanjutkanKelompok2Btn');
-        var btnKelompok3 = document.getElementById('lanjutkanKelompok3Btn');
-        var btnKelompok4 = document.getElementById('lanjutkanKelompok4Btn');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var pilihJenisModal = document.getElementById('pilihJenisPendaftaranModal');
+            var modalTargetUrlInput = document.getElementById('modalTargetUrl');
+            var btnIndividu = document.getElementById('lanjutkanIndividuBtn');
+            var btnKelompok2 = document.getElementById('lanjutkanKelompok2Btn');
+            var btnKelompok3 = document.getElementById('lanjutkanKelompok3Btn');
+            var btnKelompok4 = document.getElementById('lanjutkanKelompok4Btn');
+            var kuotaDinasSaatIni = 0;
+            var kuotaErrorModalElement = document.getElementById('kuotaTidakCukupModal');
+            var kuotaErrorModal = new bootstrap.Modal(kuotaErrorModalElement);
+            var modalErrorMessage = document.getElementById('kuotaErrorMessage');
 
-        if (pilihJenisModal) {
-            // Saat modal akan ditampilkan
-            pilihJenisModal.addEventListener('show.bs.modal', function (event) {
-                // Tombol "Pilih Dinas Ini" yang diklik
-                var button = event.relatedTarget; 
-                // Ambil URL form dari tombol
-                var targetUrl = button.getAttribute('data-dinas-url');
-                // Simpan URL di input hidden dalam modal
-                modalTargetUrlInput.value = targetUrl; 
-            });
 
-            // Fungsi untuk navigasi ke form dengan parameter jumlah
-            function navigateToForm(jumlah) {
-                var baseUrl = modalTargetUrlInput.value;
-                // Tambahkan query parameter ?jumlah=... ke URL
-                var finalUrl = baseUrl + '?jumlah=' + jumlah; 
-                window.location.href = finalUrl; // Arahkan pengguna
+            if (pilihJenisModal) {
+                pilihJenisModal.addEventListener('show.bs.modal', function(event) {
+                    var button = event.relatedTarget;
+                    var targetUrl = button.getAttribute('data-dinas-url');
+                    modalTargetUrlInput.value = targetUrl;
+                    var sisaKuotaStr = button.getAttribute('data-sisa-kuota');
+                    kuotaDinasSaatIni = parseInt(sisaKuotaStr) || 0;
+                });
+
+                function navigateToForm(jumlah) {
+                    if (jumlah > kuotaDinasSaatIni) {
+                        modalErrorMessage.textContent = 'Jumlah anggota anda (' + jumlah +
+                            ' orang) melebihi sisa kuota yang tersedia (' + kuotaDinasSaatIni + ' orang).';
+                        var pilihJenisModalInstance = bootstrap.Modal.getInstance(pilihJenisModal);
+                        pilihJenisModalInstance.hide();
+                        kuotaErrorModal.show();
+
+                        return;
+                    }
+                    var baseUrl = modalTargetUrlInput.value;
+                    var finalUrl = baseUrl + '?jumlah=' + jumlah;
+                    window.location.href = finalUrl;
+                }
+
+                btnIndividu.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    navigateToForm(1);
+                    _
+                });
+                btnKelompok2.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    navigateToForm(2);
+                });
+                btnKelompok3.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    navigateToForm(3);
+                    label
+                });
+                btnKelompok4.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    navigateToForm(4);
+                });
             }
-
-            // Tambahkan event listener ke tombol-tombol di dalam modal
-            btnIndividu.addEventListener('click', function(e) {
-                e.preventDefault(); // Mencegah link default
-                navigateToForm(1);
-            });
-            btnKelompok2.addEventListener('click', function(e) {
-                e.preventDefault();
-                navigateToForm(2);
-            });
-             btnKelompok3.addEventListener('click', function(e) {
-                e.preventDefault();
-                navigateToForm(3);
-            });
-             btnKelompok4.addEventListener('click', function(e) {
-                e.preventDefault();
-                navigateToForm(4);
-            });
-        }
-    });
-</script>
+        });
+    </script>
 @endpush

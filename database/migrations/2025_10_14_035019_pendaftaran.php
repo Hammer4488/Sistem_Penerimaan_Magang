@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('id_user')->constrained('users');
             $table->foreignId('id_dinas')->constrained('dinas', 'id_dinas');
             $table->foreignId('id_divisi')->constrained('divisi', 'id_divisi');
+            $table->string('id_grup')->nullable();
             $table->string('nama_lengkap');
             $table->string('nis_nim', 20);
             $table->text('alamat');

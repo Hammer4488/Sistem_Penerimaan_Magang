@@ -5,9 +5,7 @@
         padding: 25px;
         margin-bottom: 25px;
         border: 1px solid #dee2e6;
-        /* Menambahkan garis batas tipis */
         box-shadow: none;
-        /* Menghapus efek bayangan */
     }
 </style>
 

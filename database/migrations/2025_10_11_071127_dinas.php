@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama_dinas');
             $table->string('nama_lengkap_dinas');
             $table->text('deskripsi')->nullable();
-            $table->integer('sisa_kuota')->default(0);
+            // $table->integer('sisa_kuota')->default(0);
             $table->integer('total_kuota')->default(0);
             $table->timestamps();
         });

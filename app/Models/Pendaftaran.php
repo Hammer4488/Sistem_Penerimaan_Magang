@@ -22,6 +22,7 @@ class Pendaftaran extends Model
         'id_user',
         'id_dinas',
         'id_divisi',
+        'id_grup',
         'nama_lengkap',
         'nis_nim',
         'alamat',

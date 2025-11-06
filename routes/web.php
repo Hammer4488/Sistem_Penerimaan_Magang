@@ -39,17 +39,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/pendaftaran', [PelamarController::class, 'store'])->name('pendaftaran.store');
 
 
-
-    // Menampilkan daftar semua divisi (Read)
+    
     Route::get('/divisi', [DivisiController::class, 'index'])->name('divisi.index');
-    // Menampilkan form untuk menambah divisi baru (Create)
     Route::get('/divisi/create', [DivisiController::class, 'create'])->name('divisi.create');
-    // Menyimpan divisi baru ke database (Create)
     Route::post('/divisi', [DivisiController::class, 'store'])->name('divisi.store');
-    // Menampilkan form untuk mengedit divisi (Update)
     Route::get('/divisi/{divisi}/edit', [DivisiController::class, 'edit'])->name('divisi.edit');
-    // Memperbarui data divisi di database (Update)
     Route::put('/divisi/{divisi}', [DivisiController::class, 'update'])->name('divisi.update');  
-    // Menghapus divisi dari database (Delete)
     Route::delete('/divisi/{divisi}', [DivisiController::class, 'destroy'])->name('divisi.destroy');
 });

@@ -63,7 +63,6 @@ class MainSeeder extends Seeder
                 'nama_dinas' => $dinas[0],
                 'nama_lengkap_dinas' => $dinas[1],
                 'deskripsi' => $dinas[2],
-                'sisa_kuota' => $dinas[3],
                 'total_kuota' => $dinas[4],
                 'created_at' => now(),
                 'updated_at' => now(),

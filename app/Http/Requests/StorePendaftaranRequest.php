@@ -27,12 +27,11 @@ class StorePendaftaranRequest extends FormRequest
 
         return [
             'id_dinas'               => 'required|exists:dinas,id_dinas',
-            'id_divisi'              => 'required|exists:divisi,id_divisi', // Hanya perlu satu untuk kelompok
-
-            'nama_lengkap'           => 'required|array|min:' . $jumlahAnggotaDiminta, // Pastikan jumlah array sesuai
-            'nama_lengkap.*'         => 'required|string|max:255',                  // Validasi per item
+            'id_divisi'              => 'required|exists:divisi,id_divisi',
+            'nama_lengkap'           => 'required|array|min:' . $jumlahAnggotaDiminta,
+            'nama_lengkap.*'         => 'required|string|max:255',                 
             'nis_nim'                => 'required|array|min:' . $jumlahAnggotaDiminta,
-            'nis_nim.*'              => 'required|string|max:20|distinct|unique:pendaftaran,nis_nim', // `distinct` antar input, `unique` di DB
+            'nis_nim.*'              => 'required|string|max:20|distinct|unique:pendaftaran,nis_nim', 
             'alamat'                 => 'required|array|min:' . $jumlahAnggotaDiminta,
             'alamat.*'               => 'required|string',
             'no_hp_aktif'            => 'required|array|min:' . $jumlahAnggotaDiminta,
@@ -41,26 +40,29 @@ class StorePendaftaranRequest extends FormRequest
             'asal_sekolah_universitas.*' => 'required|string|max:255',
             'jurusan_program_studi'  => 'required|array|min:' . $jumlahAnggotaDiminta,
             'jurusan_program_studi.*'  => 'required|string|max:255',
-
             'tanggal_mulai_magang'   => 'required|date',
-            'tanggal_akhir_magang'   => 'required|date|after:tanggal_mulai',
+            'tanggal_akhir_magang' => [
+                'required',
+                'date',
+                'after_or_equal:tanggal_mulai_magang' 
+            ],
             'keterangan_status' => 'nullable|string',
-            'surat_pengantar' => 'required|file|mimes:pdf,jpg,png|max:2048', // Maks 2MB, tipe PDF/JPG/PNG
-            'cv'              => 'required|file|mimes:pdf,jpg,png|max:2048', // Maks 2MB, tipe PDF/JPG/PNG
+            'surat_pengantar' => 'required|file|mimes:pdf,jpg,png|max:2048', 
+            'cv'              => 'required|file|mimes:pdf,jpg,png|max:2048', 
         ];
     }
 
 
     protected function failedValidation(Validator $validator)
     {
-        // [LOGGING] Catat kegagalan validasi ke dalam log
+      
         Log::warning('Upaya pendaftaran gagal validasi.', [
             'user_id'      => Auth::id() ?? 'Guest',
-            'errors'       => $validator->errors()->messages(), // Error spesifik per field
-            'input_data'   => $this->except(['_token', 'password', 'password_confirmation']) // Data yang diinput pengguna
+            'errors'       => $validator->errors()->messages(), 
+            'input_data'   => $this->except(['_token', 'password', 'password_confirmation']) 
         ]);
 
-        // Jalankan perilaku default Laravel (redirect kembali dengan error)
+       
         parent::failedValidation($validator);
     }
 }

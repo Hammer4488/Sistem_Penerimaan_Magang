@@ -97,7 +97,7 @@
                         </thead>
 
                         <tbody>
-                            @forelse ($riwayatPendaftaran as $pendaftaran)
+                            @forelse ($riwayatList as $pendaftaran)
                                 <tr>
                                     {{-- Nomor urut otomatis --}}
                                     <th scope="row">{{ $loop->iteration }}</th>
@@ -186,55 +186,38 @@
 
         </main>
     </div>
-    {{-- ... (kode tabel Anda) ... --}}
-
-    {{-- [BARU] Struktur Bootstrap Modal --}}
     <div class="modal fade" id="statusDetailModal" tabindex="-1" aria-labelledby="statusDetailModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content text-center p-4 border-0 shadow-lg" style="border-radius: 15px;">
                 <div class="modal-body">
-                    {{-- Ikon akan diisi oleh JS --}}
                     <p><i id="modalStatusIcon" class="fas fa-3x mb-3"></i></p>
-                    {{-- Judul akan diisi oleh JS --}}
                     <h5 class="modal-title mb-3" id="statusDetailModalLabel"></h5>
-                    {{-- Keterangan akan diisi oleh JS --}}
                     <p id="modalStatusKeterangan" class="text-muted mb-4"></p>
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Tutup</button>
                 </div>
             </div>
         </div>
     </div>
-    {{-- Akhir Struktur Modal --}}
 
 @endsection
 
 @push('scripts')
     <script>
-        // Pastikan DOM sudah siap
         document.addEventListener('DOMContentLoaded', function() {
             var statusModal = document.getElementById('statusDetailModal');
             if (statusModal) {
                 statusModal.addEventListener('show.bs.modal', function(event) {
-                    // Tombol/Link yang memicu modal
                     var button = event.relatedTarget;
-
-                    // Ambil data dari atribut data-bs-*
                     var title = button.getAttribute('data-bs-title');
                     var icon = button.getAttribute('data-bs-icon');
                     var iconColor = button.getAttribute('data-bs-icon-color');
                     var keterangan = button.getAttribute('data-bs-keterangan');
-
-                    // Dapatkan elemen di dalam modal
                     var modalTitle = statusModal.querySelector('.modal-title');
                     var modalIconElement = statusModal.querySelector('#modalStatusIcon');
                     var modalKeteranganElement = statusModal.querySelector('#modalStatusKeterangan');
-
-                    // Update konten modal
                     modalTitle.textContent = title;
                     modalKeteranganElement.textContent = keterangan;
-
-                    // Update ikon (hapus kelas lama, tambahkan kelas baru)
                     modalIconElement.className = 'fas fa-3x mb-3 ' + icon + ' ' + iconColor;
                 });
             }

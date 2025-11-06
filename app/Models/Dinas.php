@@ -16,7 +16,7 @@ class Dinas extends Model
         'nama_dinas',
         'nama_lengkap_dinas',
         'deskripsi',
-        'sisa_kuota',
+        // 'sisa_kuota',
         'total_kuota',
     ];
 
