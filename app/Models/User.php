@@ -46,4 +46,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    
+        public function dinas()
+    {
+        return $this->belongsTo(Dinas::class, 'id_dinas');
+    }
 }

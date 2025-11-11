@@ -13,39 +13,7 @@ class MainSeeder extends Seeder
      */
     public function run(): void
     {
-        // --- MEMBUAT DATA PENGGUNA (USERS) ---
-        DB::table('users')->insert([
-            // Super Admin
-            [
-                'name' => 'Super Admin',
-                'email' => 'superadmin@gmail.com',
-                'password' => Hash::make('password'),
-                'role' => 'super admin',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            // Admin Dinas
-            [
-                'name' => 'Admin Diskominfotik',
-                'email' => 'admindiskominfo@gmail.com',
-                'password' => Hash::make('password'),
-                'role' => 'admin dinas',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            // Pelamar
-            [
-                'name' => 'AzkaGG',
-                'email' => 'az@gmail.com',
-                'password' => Hash::make('123'),
-                'role' => 'pelamar',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
-
-        // --- MEMBUAT DATA DINAS ---
-        $dinasData = [
+$dinasData = [
             ['Diskominfotik', 'Dinas Komunikasi, Informatika, dan Statistik', 'Dinas yang menangani bidang komunikasi, informatika, dan statistik daerah.', 5, 10],
             ['Dinas Pendidikan', 'Dinas Pendidikan Kota Banjarmasin', 'Dinas yang menangani bidang pendidikan dasar, menengah, dan nonformal.', 0, 10],
             ['PUPR', 'Dinas Pekerjaan Umum dan Penataan Ruang', 'Dinas yang menangani pembangunan infrastruktur dan tata ruang kota.', 5, 10],
@@ -69,18 +37,47 @@ class MainSeeder extends Seeder
             ]);
         }
 
-        // --- MEMBUAT DATA DIVISI ---
-        DB::table('divisi')->insert([
-            // Divisi untuk Diskominfotik (id_dinas = 1)
-            ['id_dinas' => 1, 'nama_divisi' => 'Pengembangan Aplikasi', 'created_at' => now(), 'updated_at' => now()],
-            ['id_dinas' => 1, 'nama_divisi' => 'Infrastruktur Jaringan', 'created_at' => now(), 'updated_at' => now()],
-            
-            // Divisi untuk Dinas Pendidikan (id_dinas = 2)
-            ['id_dinas' => 2, 'nama_divisi' => 'Kurikulum', 'created_at' => now(), 'updated_at' => now()],
-            ['id_dinas' => 2, 'nama_divisi' => 'Sarana dan Prasarana', 'created_at' => now(), 'updated_at' => now()],
+        $kominfotikId = DB::table('dinas')->where('nama_dinas', 'Diskominfotik')->value('id_dinas');
 
-            // Divisi untuk PUPR (id_dinas = 3)
-            ['id_dinas' => 3, 'nama_divisi' => 'Bina Marga', 'created_at' => now(), 'updated_at' => now()],
+        DB::table('users')->insert([
+            [
+                'name' => 'Super Admin',
+                'email' => 'superadmin@gmail.com',
+                'password' => Hash::make('password'),
+                'role' => 'super admin',
+                'id_dinas' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Admin Diskominfotik',
+                'email' => 'adis@gmail.com',
+                'password' => Hash::make('123'),
+                'role' => 'admin dinas',
+                'id_dinas' => $kominfotikId,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'AzkaGG',
+                'email' => 'az@gmail.com',
+                'password' => Hash::make('123'),
+                'role' => 'pelamar',
+                'id_dinas' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
+
+        $pendidikanId = DB::table('dinas')->where('nama_dinas', 'Dinas Pendidikan')->value('id_dinas');
+        $puprId = DB::table('dinas')->where('nama_dinas', 'PUPR')->value('id_dinas');
+
+        DB::table('divisi')->insert([
+            ['id_dinas' => $kominfotikId, 'nama_divisi' => 'Pengembangan Aplikasi', 'created_at' => now(), 'updated_at' => now()],
+            ['id_dinas' => $kominfotikId, 'nama_divisi' => 'Infrastruktur Jaringan', 'created_at' => now(), 'updated_at' => now()],
+            ['id_dinas' => $pendidikanId, 'nama_divisi' => 'Kurikulum', 'created_at' => now(), 'updated_at' => now()],
+            ['id_dinas' => $pendidikanId, 'nama_divisi' => 'Sarana dan Prasarana', 'created_at' => now(), 'updated_at' => now()],
+            ['id_dinas' => $puprId, 'nama_divisi' => 'Bina Marga', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 }

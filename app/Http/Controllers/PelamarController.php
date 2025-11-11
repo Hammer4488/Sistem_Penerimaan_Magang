@@ -26,6 +26,7 @@ class PelamarController extends Controller
     public function ajukan_index()
     {
         $user = Auth::user();
+        
         $dinasList = Dinas::withCount(['pendaftaran' => function ($query) {
             $query->where('status', 'diterima');
         }])->get();
@@ -35,10 +36,15 @@ class PelamarController extends Controller
             ->pluck('id_dinas')
             ->toArray();
 
+        $sudahMendaftar = Pendaftaran::where('id_user', $user->id)
+            ->whereIn('status', ['diproses', 'diterima'])
+            ->exists();
+
         return view('Pelamar.Page.AjukanPelamar', [
             'user' => $user,
             'dinasList' => $dinasList,
-            'pendaftaranPengguna' => $pendaftaranPengguna
+            'pendaftaranPengguna' => $pendaftaranPengguna,
+            'sudahMendaftar' => $sudahMendaftar
         ]);
     }
 
@@ -79,8 +85,8 @@ class PelamarController extends Controller
         $anggotaList = null; // Buat variabel baru
         if ($pendaftaran->id_grup) {
             $anggotaList = Pendaftaran::where('id_grup', $pendaftaran->id_grup)
-                                      ->orderBy('nama_lengkap', 'asc')
-                                      ->get();
+                ->orderBy('nama_lengkap', 'asc')
+                ->get();
         }
 
         return view('Pelamar.Page.FormPelamar', [
@@ -147,7 +153,7 @@ class PelamarController extends Controller
                     throw new \Exception("Gagal membuat data pendaftaran untuk anggota ke-" . ($i + 1));
                 }
             }
-            
+
             if ($request->hasFile('surat_pengantar')) {
                 $file = $request->file('surat_pengantar');
                 $namaFileAsli = $file->getClientOriginalName();

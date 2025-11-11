@@ -31,7 +31,7 @@ class StorePendaftaranRequest extends FormRequest
             'nama_lengkap'           => 'required|array|min:' . $jumlahAnggotaDiminta,
             'nama_lengkap.*'         => 'required|string|max:255',                 
             'nis_nim'                => 'required|array|min:' . $jumlahAnggotaDiminta,
-            'nis_nim.*'              => 'required|string|max:20|distinct|unique:pendaftaran,nis_nim', 
+            'nis_nim.*'              => 'required|string|max:20', 
             'alamat'                 => 'required|array|min:' . $jumlahAnggotaDiminta,
             'alamat.*'               => 'required|string',
             'no_hp_aktif'            => 'required|array|min:' . $jumlahAnggotaDiminta,
@@ -49,6 +49,61 @@ class StorePendaftaranRequest extends FormRequest
             'keterangan_status' => 'nullable|string',
             'surat_pengantar' => 'required|file|mimes:pdf,jpg,png|max:2048', 
             'cv'              => 'required|file|mimes:pdf,jpg,png|max:2048', 
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            // --- Error Data Umum ---
+            'id_dinas.required'       => 'Silakan pilih dinas tujuan.',
+            'id_dinas.exists'         => 'Dinas yang dipilih tidak valid.',
+            'id_divisi.required'      => 'Silakan pilih divisi tujuan.',
+            'id_divisi.exists'        => 'Divisi yang dipilih tidak valid.',
+
+            // --- Error Tanggal ---
+            'tanggal_mulai_magang.required' => 'Tanggal mulai magang wajib diisi.',
+            'tanggal_mulai_magang.date'     => 'Format tanggal mulai tidak valid.',
+            'tanggal_akhir_magang.required' => 'Tanggal akhir magang wajib diisi.',
+            'tanggal_akhir_magang.date'     => 'Format tanggal akhir tidak valid.',
+            'tanggal_akhir_magang.after_or_equal' => 'Tanggal akhir tidak boleh diatur sebelum tanggal mulai.',
+
+            // --- Error Array (Min) ---
+            'nama_lengkap.min'  => 'Jumlah nama lengkap tidak sesuai dengan jumlah anggota.',
+            'nis_nim.min'       => 'Jumlah NIS/NIM tidak sesuai dengan jumlah anggota.',
+            'alamat.min'        => 'Jumlah alamat tidak sesuai dengan jumlah anggota.',
+            'no_hp_aktif.min'   => 'Jumlah No. HP tidak sesuai dengan jumlah anggota.',
+            'asal_sekolah_universitas.min' => 'Jumlah asal sekolah tidak sesuai dengan jumlah anggota.',
+            'jurusan_program_studi.min'  => 'Jumlah jurusan tidak sesuai dengan jumlah anggota.',
+
+            // --- Error Per Anggota (.*) ---
+            'nama_lengkap.*.required' => 'Nama lengkap (setiap anggota) wajib diisi.',
+            'nama_lengkap.*.max'      => 'Nama lengkap tidak boleh lebih dari 255 karakter.',
+            
+            'nis_nim.*.required'  => 'NIS/NIM (setiap anggota) wajib diisi.',
+            'nis_nim.*.max'       => 'NIS/NIM tidak boleh lebih dari 20 karakter.',
+            'nis_nim.*.distinct'  => 'NIS/NIM tidak boleh sama/duplikat dalam satu pengajuan.',
+            'nis_nim.*.unique'    => 'NIS/NIM ini sudah terdaftar di sistem.',
+            
+            'alamat.*.required'   => 'Alamat (setiap anggota) wajib diisi.',
+            
+            'no_hp_aktif.*.required' => 'No. HP (setiap anggota) wajib diisi.',
+            'no_hp_aktif.*.max'      => 'No. HP tidak boleh lebih dari 20 karakter.',
+            
+            'asal_sekolah_universitas.*.required' => 'Asal sekolah/universitas (setiap anggota) wajib diisi.',
+            
+            'jurusan_program_studi.*.required'  => 'Jurusan/Program Studi (setiap anggota) wajib diisi.',
+
+            // --- Error File Upload ---
+            'surat_pengantar.required' => 'File surat pengantar wajib diunggah.',
+            'surat_pengantar.file'     => 'Surat pengantar harus berupa file.',
+            'surat_pengantar.mimes'    => 'Format surat pengantar harus PDF, JPG, atau PNG.',
+            'surat_pengantar.max'      => 'Ukuran surat pengantar tidak boleh lebih dari 2 MB.',
+            
+            'cv.required' => 'File CV wajib diunggah.',
+            'cv.file'     => 'CV harus berupa file.',
+            'cv.mimes'    => 'Format CV harus PDF, JPG, atau PNG.',
+            'cv.max'      => 'Ukuran CV tidak boleh lebih dari 2 MB.',
         ];
     }
 

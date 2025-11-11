@@ -4,11 +4,6 @@
 
 @push('styles')
     <style>
-        /* body {
-                                                                        font-family: 'Poppins', sans-serif;
-                                                                        background-color: #FF0000;
-                                                                    } */
-
         .main-content {
             margin-left: 300px;
             padding: 0;
@@ -230,16 +225,27 @@
                                     {{-- Blok kode BARU dengan 3 kondisi --}}
                                     <div class="mt-4">
                                         @if (in_array($dinas->id_dinas, $pendaftaranPengguna))
-                                            {{-- Kondisi 1: Jika ID dinas ada di dalam riwayat pendaftaran pengguna --}}
+                                            {{-- Kondisi 1: Tampilkan "Sudah Diajukan" untuk dinas yang dia pilih --}}
                                             <a href ="#" class="btn btn-success w-100 fw-bold disabled"
                                                 style="opacity: 0.8;">
                                                 <i class="fas fa-check-circle me-2"></i> Sudah Diajukan
                                             </a>
+                                        @elseif ($sudahMendaftar)
+                                            {{-- 
+          Kondisi 2: [BARU] Jika pelamar sudah mendaftar di dinas LAIN,
+          nonaktifkan tombol ini.
+        --}}
+                                            <a href="#" class="btn btn-secondary w-100 fw-bold disabled"
+                                                style="opacity: 0.7;">
+                                                <i class="fas fa-ban me-2"></i> Sudah Mendaftar
+                                            </a>
                                         @elseif ($sisaKuota <= 0)
+                                            {{-- Kondisi 3: Jika kuota penuh (dan dia belum mendaftar) --}}
                                             <a href="#" class="btn btn-secondary w-100 fw-bold disabled">
                                                 Kuota Penuh
                                             </a>
                                         @else
+                                            {{-- Kondisi 4: Tombol normal jika semua kondisi di atas salah --}}
                                             <a href="#" class="btn btn-primary w-100 fw-bold" data-bs-toggle="modal"
                                                 data-bs-target="#pilihJenisPendaftaranModal"
                                                 data-dinas-url="{{ route('pendaftaran.create', $dinas) }}"
