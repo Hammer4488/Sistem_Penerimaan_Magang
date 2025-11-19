@@ -179,7 +179,8 @@
 
                     @foreach ($dinasList as $dinas)
                         @php
-                            $sisaKuota = $dinas->total_kuota - $dinas->pendaftaran_count;
+                            $totalKuotaDinas = $dinas->divisi_sum_total_kuota ?? 0;
+                            $sisaKuota = $totalKuotaDinas - $dinas->pendaftaran_count;
                         @endphp
                         <div class="col-lg-6 mb-4">
                             <div class="card quota-card h-100">
@@ -204,7 +205,7 @@
                                         {{-- Statistik Kuota --}}
                                         <div class="col-4">
                                             <div class="stat-box">
-                                                <div class="number text-primary">{{ $dinas->total_kuota }}</div>
+                                                <div class="number text-primary">{{ $totalKuotaDinas }}</div>
                                                 <div class="label">Total Kuota</div>
                                             </div>
                                         </div>
@@ -222,30 +223,23 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {{-- Blok kode BARU dengan 3 kondisi --}}
+
                                     <div class="mt-4">
                                         @if (in_array($dinas->id_dinas, $pendaftaranPengguna))
-                                            {{-- Kondisi 1: Tampilkan "Sudah Diajukan" untuk dinas yang dia pilih --}}
                                             <a href ="#" class="btn btn-success w-100 fw-bold disabled"
                                                 style="opacity: 0.8;">
                                                 <i class="fas fa-check-circle me-2"></i> Sudah Diajukan
                                             </a>
                                         @elseif ($sudahMendaftar)
-                                            {{-- 
-          Kondisi 2: [BARU] Jika pelamar sudah mendaftar di dinas LAIN,
-          nonaktifkan tombol ini.
-        --}}
                                             <a href="#" class="btn btn-secondary w-100 fw-bold disabled"
                                                 style="opacity: 0.7;">
                                                 <i class="fas fa-ban me-2"></i> Sudah Mendaftar
                                             </a>
                                         @elseif ($sisaKuota <= 0)
-                                            {{-- Kondisi 3: Jika kuota penuh (dan dia belum mendaftar) --}}
                                             <a href="#" class="btn btn-secondary w-100 fw-bold disabled">
                                                 Kuota Penuh
                                             </a>
                                         @else
-                                            {{-- Kondisi 4: Tombol normal jika semua kondisi di atas salah --}}
                                             <a href="#" class="btn btn-primary w-100 fw-bold" data-bs-toggle="modal"
                                                 data-bs-target="#pilihJenisPendaftaranModal"
                                                 data-dinas-url="{{ route('pendaftaran.create', $dinas) }}"
@@ -354,7 +348,6 @@
                 btnIndividu.addEventListener('click', function(e) {
                     e.preventDefault();
                     navigateToForm(1);
-                    _
                 });
                 btnKelompok2.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -363,7 +356,6 @@
                 btnKelompok3.addEventListener('click', function(e) {
                     e.preventDefault();
                     navigateToForm(3);
-                    label
                 });
                 btnKelompok4.addEventListener('click', function(e) {
                     e.preventDefault();

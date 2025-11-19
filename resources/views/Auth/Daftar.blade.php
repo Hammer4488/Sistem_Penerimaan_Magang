@@ -26,22 +26,22 @@
         /* Styling untuk kartu daftar */
         .register-card {
             width: 100%;
-            max-width: 500px;
+            max-width: 380px; /* <--- NILAI SUDAH DIPERKECIL */
             background-color: #ffffff;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            padding: 50px;
+            padding: 30px;
         }
 
         .register-card .logo {
-            width: 80px;
+            width: 60px;
             height: auto;
             display: block;
-            margin: 0 auto 20px;
+            margin: 0 auto 10px;
         }
 
         .register-card h2 {
-            font-weight: 700;
+            font-weight: 500;
         }
 
         .login-link a {
@@ -75,6 +75,11 @@
         .input-group>.form-control:focus {
             z-index: 5;
         }
+
+        /* Bagian CSS untuk #name dihapus 
+           agar lebar input field konsisten 
+        */
+
     </style>
 @endpush
 @section('content')
@@ -90,7 +95,7 @@
             <form method="POST" action="{{ route('daftar') }}" class="text-start mt-4">
                 @csrf
 
-                <div class="mb-3">
+                <div class="mb-2">
                     <label for="name" class="form-label">Nama</label>
                     <input type="text" class="form-control @error('name') is-invalid @enderror" id="name"
                         name="name" value="{{ old('name') }}" required autofocus>

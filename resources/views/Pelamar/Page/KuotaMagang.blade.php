@@ -10,17 +10,17 @@
         }
 
         /* .navbar-custom {
-            background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            padding: 0.5rem 0;
-        }
+                                    background-color: #ffffff;
+                                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+                                    padding: 0.5rem 0;
+                                }
 
-        .navbar-custom .logo-img {
-            height: 120px;
-            width: 120px;
-            object-fit: contain;
-            margin-right: -8px;
-        } */
+                                .navbar-custom .logo-img {
+                                    height: 120px;
+                                    width: 120px;
+                                    object-fit: contain;
+                                    margin-right: -8px;
+                                } */
 
         .quota-card {
             border: 1px solid #e0e0e0;
@@ -54,7 +54,7 @@
 @endpush
 @section('content')
 
-<x-navbar/>
+    <x-navbar />
     <div class="container py-5">
         <div class="text-center mb-5">
             <h1 class="display-5 fw-bold">Kuota Magang per Dinas</h1>
@@ -62,13 +62,11 @@
         </div>
 
         <div class="row g-4">
-            {{-- [MULAI PENGGANTIAN] --}}
-            {{-- Gunakan @forelse untuk perulangan yang aman jika data kosong --}}
             @forelse ($dinasList as $dinas)
                 @php
-                    // Hitung Kuota Terisi (dari controller) dan Sisa Kuota
+                    $totalKuotaDinas = $dinas->divisi_sum_total_kuota ?? 0;
                     $kuotaTerisi = $dinas->pendaftaran_count;
-                    $sisaKuota = $dinas->total_kuota - $kuotaTerisi;
+                    $sisaKuota = $totalKuotaDinas - $kuotaTerisi;
                 @endphp
 
                 <div class="col-lg-6">
@@ -92,7 +90,7 @@
                             <div class="row text-center g-2">
                                 <div class="col-4">
                                     <div class="stat-box">
-                                        <div class="number text-primary">{{ $dinas->total_kuota }}</div>
+                                        <div class="number text-primary">{{ $totalKuotaDinas }}</div>
                                         <div class="label">Total Kuota</div>
                                     </div>
                                 </div>

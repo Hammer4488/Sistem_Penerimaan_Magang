@@ -36,18 +36,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/pendaftaran/{pendaftaran}', [PelamarController::class, 'show'])->name('pendaftaran.show');
     Route::get('/pendaftaran/create/{dinas}', [PelamarController::class, 'pendaftaran_create'])->name('pendaftaran.create');
     Route::post('/pendaftaran', [PelamarController::class, 'store'])->name('pendaftaran.store');
-    
-    Route::get('/divisi', [DivisiController::class, 'index'])->name('divisi.index');
-    Route::get('/divisi/create', [DivisiController::class, 'create'])->name('divisi.create');
-    Route::post('/divisi', [DivisiController::class, 'store'])->name('divisi.store');
-    Route::get('/divisi/{divisi}/edit', [DivisiController::class, 'edit'])->name('divisi.edit');
-    Route::put('/divisi/{divisi}', [DivisiController::class, 'update'])->name('divisi.update');  
-    Route::delete('/divisi/{divisi}', [DivisiController::class, 'destroy'])->name('divisi.destroy');
+    Route::get('/dokumen/download/{dokumen}', [PelamarController::class, 'downloadSurat'])
+        ->name('dokumen.download');
 
+    // --- Rute Admin Dinas ---
+    Route::get('/beranda.dinas', [DinasController::class, 'beranda'])->name('beranda.dinas');
+    Route::get('/pendaftar.dinas', [DinasController::class, 'pendaftar'])->name('pendaftar.dinas');
+    Route::post('/pendaftaran.dinas/setujui', [DinasController::class, 'setujuiPendaftaran'])->name('admin.pendaftar.setujui');
+    Route::post('/pendaftaran.dinas/tolak', [DinasController::class, 'tolakPendaftaran'])->name('admin.pendaftardinas.tolak');
+    Route::post('/pendaftaran.dinas/approve-only', [DinasController::class, 'approveOnlyPendaftaran'])->name('admin.pendaftar.approveOnly');
+    Route::post('/pendaftar/hapus-surat', [DinasController::class, 'hapusSuratBalasan'])
+        ->name('admin.pendaftar.hapusSurat');
 
-// --- Rute Admin Dinas ---
-        Route::get('/beranda.dinas', [DinasController::class, 'beranda_index'])->name('beranda.dinas');
-        Route::get('/pendaftaran.dinas', [DinasController::class, 'beranda_index'])->name('pendaftaran.dinas');
-        Route::get('/kuota.dinas', [DinasController::class, 'beranda_index'])->name('kuota.dinas');
+    Route::get('/kuota.dinas', [DivisiController::class, 'index'])->name('Admin_Dinas.page.KuotaDinas');
+    Route::post('/kelola-kuota', [DivisiController::class, 'store'])->name('admin.divisi.store');
+    Route::put('/kelola-kuota/{divisi:id_divisi}', [DivisiController::class, 'update'])->name('admin.divisi.update');
+    Route::delete('/kelola-kuota/{divisi:id_divisi}', [DivisiController::class, 'destroy'])->name('admin.divisi.destroy');
 
+    // Route::get('/admin/pendaftar/grup/{id_grup}', [DinasController::class, 'detailGrup']) 
+    //  ->name('pendaftar.grup.detail');
 });

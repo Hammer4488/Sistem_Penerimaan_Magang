@@ -16,7 +16,9 @@ class BerandaController extends Controller
     {
         $dinasList = Dinas::withCount(['pendaftaran' => function ($query) {
             $query->where('status', 'diterima');
-        }])->get();
+        }])
+            ->withSum('divisi', 'total_kuota') 
+            ->get();
         return view('Pelamar.Page.KuotaMagang', ['dinasList' => $dinasList]);
     }
 }

@@ -164,9 +164,27 @@
 
                                     {{-- Logika untuk tombol Surat Balasan --}}
                                     <td>
-                                        @if ($pendaftaran->status == 'diterima')
-                                            <a href="#" class="btn btn-primary btn-sm">Download</a>
+                                        @php
+                                            // 1. Ambil data surat balasan dari relasi 'dokumen'
+                                            $suratBalasan = $pendaftaran->dokumen
+                                                ->where('jenis_dokumen', 'surat_balasan')
+                                                ->first();
+                                        @endphp
+
+                                        {{-- 2. Cek apakah status 'diterima' DAN file suratnya ada --}}
+                                        @if ($pendaftaran->status == 'diterima' && $suratBalasan)
+                                            {{-- 3. INI BAGIAN PENTINGNYA --}}
+                                            {{-- Kita gunakan Storage::url() SAMA SEPERTI CV KAMU --}}
+                                            {{-- Kita juga tambahkan target="_blank" agar file dibuka di tab baru --}}
+                                            <a href="{{ Storage::url($suratBalasan->path_file) }}"
+                                                class="btn btn-primary btn-sm" target="_blank">
+                                                <i class="fas fa-download me-1"></i> Download
+                                            </a>
+                                        @elseif ($pendaftaran->status == 'diterima')
+                                            {{-- Pengaman jika status diterima tapi file tidak ada --}}
+                                            <span class="text-muted small">File tidak ditemukan</span>
                                         @else
+                                            {{-- Jika status 'diproses' atau 'ditolak' --}}
                                             -
                                         @endif
                                     </td>

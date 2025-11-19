@@ -102,7 +102,6 @@
             <img src="{{ asset('image/LOGO-PEMKOT-BARU.png') }}" alt="Logo" class="logo">
 
             @if (Auth::user()->role === 'pelamar')
-
                 {{-- ### MENU UNTUK PELAMAR (KODE ASLI ANDA) ### --}}
                 <h3 class="sidebar-title">Beranda</h3>
                 <hr class="sidebar-divider">
@@ -139,9 +138,7 @@
                         </a>
                     </li>
                 </ul>
-
             @elseif (Auth::user()->role === 'admin dinas')
-
                 {{-- ### MENU BARU UNTUK ADMIN DINAS ### --}}
                 <h3 class="sidebar-title">Admin Dinas</h3>
                 <hr class="sidebar-divider">
@@ -157,22 +154,58 @@
                     </li>
                     <li class="nav-item">
                         {{-- Ganti '$active' dan 'route()' sesuai kebutuhan Anda --}}
-                        <a class="nav-link {{ $active === 'pendaftaran.dinas' ? 'active' : '' }}"
-                            href="{{ route('pendaftaran.dinas') }}"> {{-- <-- SESUAIKAN ROUTE --}}
+                        <a class="nav-link {{ $active === 'pendaftar.dinas' ? 'active' : '' }}"
+                            href="{{ route('pendaftar.dinas') }}"> {{-- <-- SESUAIKAN ROUTE --}}
                             <i class="fas fa-users"></i>
                             <span>Pendaftar Magang</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        {{-- Ganti '$active' dan 'route()' sesuai kebutuhan Anda --}}
-                        <a class="nav-link {{ $active === 'kuota.dinas' ? 'active' : '' }}"
-                            href="{{ route('kuota.dinas') }}"> {{-- <-- SESUAIKAN ROUTE --}}
+
+                        {{-- **PERBAIKAN 1: Cocokkan $active dengan 'kelolakuota' --}}
+                        <a class="nav-link {{ $active === 'kelolakuota' ? 'active' : '' }}" {{-- **PERBAIKAN 2: Gunakan route 'admin.divisi.index' --}}
+                            href="{{ route('Admin_Dinas.page.KuotaDinas') }}">
                             <i class="fas fa-chart-pie"></i>
-                            <span>Kelola Kuota</span>
+                            <span>Kelola Kuota Divisi</span>
                         </a>
                     </li>
                 </ul>
 
+                @elseif (Auth::user()->role === 'super admin')
+                <h3 class="sidebar-title">Super Admin</h3>
+                <hr class="sidebar-divider">
+
+                <ul class="nav flex-column">
+                    {{-- 1. DASHBOARD --}}
+                    <li class="nav-item">
+                        {{-- Ganti '#' dengan route dashboard super admin --}}
+                        <a class="nav-link {{ $active === 'dashboard_super' ? 'active' : '' }}" 
+                           href="#"> 
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+
+                    {{-- 2. KELOLA DINAS --}}
+                    <li class="nav-item">
+                        {{-- Ganti '#' dengan route kelola dinas --}}
+                        <a class="nav-link {{ $active === 'keloladinas' ? 'active' : '' }}" 
+                           href="#">
+                            <i class="fas fa-building"></i>
+                            <span>Kelola Dinas</span>
+                        </a>
+                    </li>
+
+                    {{-- 3. KELOLA AKUN --}}
+                    <li class="nav-item">
+                        {{-- Ganti '#' dengan route kelola akun --}}
+                        <a class="nav-link {{ $active === 'kelolaakun' ? 'active' : '' }}" 
+                           href="#">
+                            <i class="fas fa-user-cog"></i>
+                            <span>Kelola Akun</span>
+                        </a>
+                    </li>
+                </ul>
             @endif
 
             {{-- ============================================== --}}

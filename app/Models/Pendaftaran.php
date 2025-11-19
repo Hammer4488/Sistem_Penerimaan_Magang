@@ -12,12 +12,11 @@ class Pendaftaran extends Model
 
     protected $table = 'pendaftaran'; // <-- TAMBAHKAN BARIS INI
     protected $primaryKey = 'id_pendaftaran';
+    protected $casts = [
+        'tanggal_mulai_magang' => 'date',
+        'tanggal_akhir_magang' => 'date',
+    ];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'id_user',
         'id_dinas',
@@ -32,28 +31,34 @@ class Pendaftaran extends Model
         'tanggal_mulai_magang',
         'tanggal_akhir_magang',
         'status',
+        
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'id_user');
     }
-
-    /**
-     * Mendapatkan dinas yang dituju oleh pendaftaran.
-     */
     public function dinas()
     {
         return $this->belongsTo(Dinas::class, 'id_dinas');
     }
     public function divisi()
     {
-        return $this->belongsTo(Divisi::class, 'id_divisi');
+        return $this->belongsTo(Divisi::class, 'id_divisi', 'id_divisi');
     }
-
     public function dokumen(): HasMany
     {
         return $this->hasMany(Dokumen::class, 'id_pendaftaran');
     }
+
+    public function suratBalasan()
+{
+    return $this->hasOne(Dokumen::class, 'id_pendaftaran')
+                ->where('jenis_dokumen', 'surat_balasan');
+}
     
+    public function anggotaGrup()
+    {
+        return $this->hasMany(Pendaftaran::class, 'id_grup', 'id_grup');
+    }
 }

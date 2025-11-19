@@ -13,17 +13,13 @@ class MainSeeder extends Seeder
      */
     public function run(): void
     {
-$dinasData = [
+        // --- 1. MEMBUAT DATA DINAS ---
+        // 'total_kuota' (indeks 4) dari array lama akan kita gunakan nanti di divisi
+        $dinasData = [
             ['Diskominfotik', 'Dinas Komunikasi, Informatika, dan Statistik', 'Dinas yang menangani bidang komunikasi, informatika, dan statistik daerah.', 5, 10],
             ['Dinas Pendidikan', 'Dinas Pendidikan Kota Banjarmasin', 'Dinas yang menangani bidang pendidikan dasar, menengah, dan nonformal.', 0, 10],
             ['PUPR', 'Dinas Pekerjaan Umum dan Penataan Ruang', 'Dinas yang menangani pembangunan infrastruktur dan tata ruang kota.', 5, 10],
-            ['Lingkungan Hidup', 'Dinas Lingkungan Hidup Kota Banjarmasin', 'Dinas yang menangani pengelolaan lingkungan, sampah, dan pengendalian pencemaran.', 5, 10],
-            ['Diskop UMKM', 'Dinas Koperasi dan UMKM', 'Dinas yang menangani pengembangan koperasi dan usaha mikro.', 5, 10],
-            ['DP3A', 'Dinas Pemberdayaan Perempuan dan Perlindungan Anak', 'Dinas yang menangani pemberdayaan perempuan, perlindungan anak, dan kesetaraan gender.', 5, 10],
-            ['BPKD', 'Badan Pengelola Keuangan Daerah', 'Badan yang menangani pengelolaan anggaran, aset, dan keuangan daerah.', 5, 10],
-            ['BKPSDM', 'Badan Kepegawaian dan Pengembangan SDM', 'Badan yang menangani kepegawaian dan pengembangan sumber daya aparatur.', 5, 10],
-            ['Inspektorat', 'Inspektorat Kota Banjarmasin', 'Badan yang menangani pengawasan, audit, dan evaluasi penyelenggaraan pemerintah.', 5, 10],
-            ['Sekretariat Daerah (Setda)', 'Sekretariat Daerah Kota Banjarmasin', 'Sekretariat yang membantu wali kota dalam penyusunan kebijakan.', 5, 10],
+            // ... (data dinas lainnya bisa ditambahkan di sini)
         ];
 
         foreach ($dinasData as $dinas) {
@@ -31,14 +27,18 @@ $dinasData = [
                 'nama_dinas' => $dinas[0],
                 'nama_lengkap_dinas' => $dinas[1],
                 'deskripsi' => $dinas[2],
-                'total_kuota' => $dinas[4],
+                // 'total_kuota' DIHAPUS DARI SINI
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
         }
 
+        // --- 2. AMBIL ID DINAS (SETELAH DIBUAT) ---
         $kominfotikId = DB::table('dinas')->where('nama_dinas', 'Diskominfotik')->value('id_dinas');
+        $pendidikanId = DB::table('dinas')->where('nama_dinas', 'Dinas Pendidikan')->value('id_dinas');
+        $puprId = DB::table('dinas')->where('nama_dinas', 'PUPR')->value('id_dinas');
 
+        // --- 3. MEMBUAT DATA USERS ---
         DB::table('users')->insert([
             [
                 'name' => 'Super Admin',
@@ -66,18 +66,30 @@ $dinasData = [
                 'id_dinas' => null,
                 'created_at' => now(),
                 'updated_at' => now(),
+
+                'name' => 'Zidang',
+                'email' => 'zi@gmail.com',
+                'password' => Hash::make('123'),
+                'role' => 'pelamar',
+                'id_dinas' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ]);
-
-        $pendidikanId = DB::table('dinas')->where('nama_dinas', 'Dinas Pendidikan')->value('id_dinas');
-        $puprId = DB::table('dinas')->where('nama_dinas', 'PUPR')->value('id_dinas');
-
+        
+        // --- 4. MEMBUAT DATA DIVISI (DENGAN KUOTA) ---
+        // Kuota dari array $dinasData (indeks 4) didistribusikan di sini
         DB::table('divisi')->insert([
-            ['id_dinas' => $kominfotikId, 'nama_divisi' => 'Pengembangan Aplikasi', 'created_at' => now(), 'updated_at' => now()],
-            ['id_dinas' => $kominfotikId, 'nama_divisi' => 'Infrastruktur Jaringan', 'created_at' => now(), 'updated_at' => now()],
-            ['id_dinas' => $pendidikanId, 'nama_divisi' => 'Kurikulum', 'created_at' => now(), 'updated_at' => now()],
-            ['id_dinas' => $pendidikanId, 'nama_divisi' => 'Sarana dan Prasarana', 'created_at' => now(), 'updated_at' => now()],
-            ['id_dinas' => $puprId, 'nama_divisi' => 'Bina Marga', 'created_at' => now(), 'updated_at' => now()],
+            // Diskominfotik (Total 10)
+            ['id_dinas' => $kominfotikId, 'nama_divisi' => 'Pengembangan Aplikasi', 'total_kuota' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['id_dinas' => $kominfotikId, 'nama_divisi' => 'Infrastruktur Jaringan', 'total_kuota' => 5, 'created_at' => now(), 'updated_at' => now()],
+            
+            // Dinas Pendidikan (Total 10)
+            ['id_dinas' => $pendidikanId, 'nama_divisi' => 'Kurikulum', 'total_kuota' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['id_dinas' => $pendidikanId, 'nama_divisi' => 'Sarana dan Prasarana', 'total_kuota' => 5, 'created_at' => now(), 'updated_at' => now()],
+
+            // PUPR (Total 10)
+            ['id_dinas' => $puprId, 'nama_divisi' => 'Bina Marga', 'total_kuota' => 10, 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 }

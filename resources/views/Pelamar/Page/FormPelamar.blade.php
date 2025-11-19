@@ -167,23 +167,7 @@
                             <span class="text-muted">File tidak ditemukan.</span>
                         @endif
                     </div>
-                    {{-- ======================================================= --}}
-                    {{-- ^^^ AKHIR DARI BLOK BARU ^^^ --}}
-                    {{-- ======================================================= --}}
-
-                    {{-- 
-                ============================================================
-                AWAL LOGIKA PEMISAH TAMPILAN
-                ============================================================
-                --}}
                 @elseif ($loopCount == 1)
-                    {{-- 
-                    ============================================================
-                    TAMPILAN UNTUK INDIVIDU (atau Mode Show)
-                    Sesuai gambar 1: Semua field digabung dalam satu grup.
-                    ============================================================
-                    --}}
-
                     <h5 class="fw-bold mt-4 mb-3">
                         @if (isset($mode) && $mode == 'show')
                             Detail Pendaftar
@@ -248,6 +232,9 @@
                             <label for="id_divisi" class="form-label">Divisi yang Dipilih</label>
                             <select class="form-select" name="id_divisi"
                                 @if (isset($mode) && $mode == 'show') disabled @endif required>
+                                <option value="" disabled @if (!isset($data) || !$data->id_divisi) selected @endif>
+                                    Pilih divisi sesuai minat Anda
+                                </option>
                                 @foreach ($divisiList as $divisi)
                                     <option value="{{ $divisi->id_divisi }}"
                                         @if (isset($data) && $data->id_divisi == $divisi->id_divisi) selected @endif>
@@ -392,24 +379,7 @@
                                         <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
                                 </div>
-
-                                {{-- Divisi hanya untuk anggota 1 --}}
                                 @if ($i == 1)
-                                    <div class="col-12">
-                                        <label for="id_divisi" class="form-label">Divisi yang Dipilih (untuk
-                                            Kelompok)</label>
-                                        <select class="form-select" name="id_divisi" required>
-                                            @foreach ($divisiList as $divisi)
-                                                <option value="{{ $divisi->id_divisi }}"
-                                                    @if (old('id_divisi') == $divisi->id_divisi) selected @endif>
-                                                    {{ $divisi->nama_divisi }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('id_divisi')
-                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                        @enderror
-                                    </div>
                                 @endif
                             </div>
                         </div>
@@ -419,6 +389,27 @@
                     <hr>
                     <h5 class="fw-bold mt-4 mb-3">Data Kelompok</h5>
                     <div class="row g-3">
+
+                        <div class="col-12">
+                            <label for="id_divisi" class="form-label">Divisi yang Dipilih (untuk
+                                Kelompok)</label>
+                            <select class="form-select" name="id_divisi"
+                                @if (isset($mode) && $mode == 'show') disabled @endif required>
+                                <option value="" disabled @if (!isset($data) || !$data->id_divisi) selected @endif>
+                                    Pilih divisi sesuai minat Anda
+                                </option>
+                                @foreach ($divisiList as $divisi)
+                                    <option value="{{ $divisi->id_divisi }}"
+                                        @if (isset($data) && $data->id_divisi == $divisi->id_divisi) selected @endif>
+                                        {{ $divisi->nama_divisi }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('id_divisi')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <div class="col-12">
                             <label for="surat_pengantar" class="form-label">Surat Pengantar </label>
                             <input class="form-control @error('surat_pengantar') is-invalid @enderror" type="file"
@@ -455,14 +446,7 @@
                         </div>
                     </div>
                 @endif
-                {{-- 
-                ============================================================
-                AKHIR LOGIKA PEMISAH TAMPILAN
-                ============================================================
-                --}}
 
-
-                {{-- Tombol submit --}}
                 @if (!isset($mode) || $mode != 'show')
                     <div class="d-grid mt-4">
                         <button type="submit" class="btn btn-primary btn-lg">Simpan & Ajukan Permintaan

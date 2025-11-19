@@ -25,17 +25,15 @@
         /* Styling untuk kartu login */
         .login-card {
             width: 100%;
-            max-width: 500px;
-            /* Dipersempit agar lebih ramping */
+            max-width: 380px;
             background-color: #ffffff;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            padding: 50px;
-            /* Padding diubah agar lebih seimbang */
+            padding: 30px;
         }
 
         .login-card .logo {
-            width: 80px;
+            width: 60px;
             height: auto;
             display: block;
             margin: 0 auto 20px;

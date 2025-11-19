@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Dinas;
 use App\Models\Dokumen;
+use App\Models\Divisi;
 use App\Models\Pendaftaran;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
@@ -23,19 +24,22 @@ class PelamarController extends Controller
         $user = Auth::user();
         return view('Pelamar.Page.BerandaPelamar', ['user' => $user]);
     }
+
+    
     public function ajukan_index()
     {
         $user = Auth::user();
-        
+
         $dinasList = Dinas::withCount(['pendaftaran' => function ($query) {
             $query->where('status', 'diterima');
-        }])->get();
+        }])
+            ->withSum('divisi', 'total_kuota') 
+            ->get();
 
         $pendaftaranPengguna = Pendaftaran::where('id_user', $user->id)
-            ->where('status', '!=', 'ditolak')
+            ->whereIn('status', ['diproses', 'diterima']) 
             ->pluck('id_dinas')
             ->toArray();
-
         $sudahMendaftar = Pendaftaran::where('id_user', $user->id)
             ->whereIn('status', ['diproses', 'diterima'])
             ->exists();
@@ -82,7 +86,7 @@ class PelamarController extends Controller
 
         $pendaftaran->load('dinas.divisi', 'dokumen');
 
-        $anggotaList = null; // Buat variabel baru
+        $anggotaList = null; 
         if ($pendaftaran->id_grup) {
             $anggotaList = Pendaftaran::where('id_grup', $pendaftaran->id_grup)
                 ->orderBy('nama_lengkap', 'asc')
