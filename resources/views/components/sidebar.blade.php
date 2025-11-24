@@ -170,41 +170,34 @@
                         </a>
                     </li>
                 </ul>
-
-                @elseif (Auth::user()->role === 'super admin')
+            @elseif (Auth::user()->role === 'super admin')
                 <h3 class="sidebar-title">Super Admin</h3>
                 <hr class="sidebar-divider">
 
                 <ul class="nav flex-column">
-                    {{-- 1. DASHBOARD --}}
                     <li class="nav-item">
-                        {{-- Ganti '#' dengan route dashboard super admin --}}
-                        <a class="nav-link {{ $active === 'dashboard_super' ? 'active' : '' }}" 
-                           href="#"> 
+                        <a class="nav-link {{ $active === 'dashboard_super' ? 'active' : '' }}"
+                            href="{{ route('superadmin.dashboard') }}">
                             <i class="fas fa-tachometer-alt"></i>
                             <span>Dashboard</span>
                         </a>
                     </li>
 
-                    {{-- 2. KELOLA DINAS --}}
                     <li class="nav-item">
-                        {{-- Ganti '#' dengan route kelola dinas --}}
-                        <a class="nav-link {{ $active === 'keloladinas' ? 'active' : '' }}" 
-                           href="#">
+                        <a class="nav-link {{ $active === 'keloladinas' ? 'active' : '' }}"
+                            href="{{ route('superadmin.dinas.index') }}">
                             <i class="fas fa-building"></i>
                             <span>Kelola Dinas</span>
                         </a>
                     </li>
 
-                    {{-- 3. KELOLA AKUN --}}
                     <li class="nav-item">
-                        {{-- Ganti '#' dengan route kelola akun --}}
-                        <a class="nav-link {{ $active === 'kelolaakun' ? 'active' : '' }}" 
-                           href="#">
+                        <a class="nav-link {{ $active === 'kelolaakun' ? 'active' : '' }}" href="#">
                             <i class="fas fa-user-cog"></i>
                             <span>Kelola Akun</span>
                         </a>
                     </li>
+
                 </ul>
             @endif
 

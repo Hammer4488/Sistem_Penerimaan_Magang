@@ -92,6 +92,6 @@ class DivisiController extends Controller
         $divisi->delete();
 
         return redirect()->route('Admin_Dinas.page.KuotaDinas')
-            ->with('deleted', 'Divisi berhasil dihapus.');
+            ->with('success', 'Divisi berhasil dihapus.');
     }
 }

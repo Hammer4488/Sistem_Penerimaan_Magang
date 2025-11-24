@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User; // Pastikan ini ada di bagian atas file
-use Illuminate\Support\Facades\Hash; // Pastikan ini ada di bagian atas file
-use Illuminate\Support\Facades\Session; // Import Session
-
+use App\Models\User; 
+use Illuminate\Support\Facades\Hash; 
+use Illuminate\Support\Facades\Session; 
 
 class AuthController extends Controller
 {

@@ -90,7 +90,7 @@
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     {{-- Ikon Check Circle (Berhasil) tapi background Merah --}}
                     <i class="fas fa-check-circle me-2"></i>
-                    <strong>Berhasil!</strong> {{ session('rejected') }}
+                    <strong>Berhasil!</strong> {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif

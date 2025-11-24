@@ -42,8 +42,8 @@ class MainSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'name' => 'Super Admin',
-                'email' => 'superadmin@gmail.com',
-                'password' => Hash::make('password'),
+                'email' => 'su@gmail.com',
+                'password' => Hash::make('123'),
                 'role' => 'super admin',
                 'id_dinas' => null,
                 'created_at' => now(),
@@ -66,10 +66,11 @@ class MainSeeder extends Seeder
                 'id_dinas' => null,
                 'created_at' => now(),
                 'updated_at' => now(),
-
+            ],
+            [
                 'name' => 'Zidang',
                 'email' => 'zi@gmail.com',
-                'password' => Hash::make('123'),
+                'password' => Hash::make('abc'),
                 'role' => 'pelamar',
                 'id_dinas' => null,
                 'created_at' => now(),

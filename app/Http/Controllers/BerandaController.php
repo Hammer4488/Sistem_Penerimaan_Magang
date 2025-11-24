@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth; // <-- Penting untuk mengambil data user
+use Illuminate\Support\Facades\Auth; 
 use App\Models\Dinas;
 
 class BerandaController extends Controller
@@ -22,3 +22,4 @@ class BerandaController extends Controller
         return view('Pelamar.Page.KuotaMagang', ['dinasList' => $dinasList]);
     }
 }
+

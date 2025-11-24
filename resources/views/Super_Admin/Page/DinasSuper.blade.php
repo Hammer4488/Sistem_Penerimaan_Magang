@@ -1,8 +1,9 @@
 @extends('layouts.app')
-@section('title', 'Kelola Kuota')
+@section('title', 'Kelola Dinas')
 
 @push('styles')
     <style>
+        /* Menggunakan style yang sama persis agar konsisten */
         .main-content {
             margin-left: 300px;
             padding: 0;
@@ -63,7 +64,7 @@
 
 @section('content')
 
-    <x-sidebar active="kelolakuota" />
+    <x-sidebar active="keloladinas" />
 
     <div class="main-content">
         <main class="content-body">
@@ -75,14 +76,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
-
-            {{-- @if (session('deleted'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="fas fa-check-circle me-2"></i>
-                    <strong>Berhasil!</strong> {{ session('deleted') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif --}}
 
             @if (session('error'))
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -107,9 +100,9 @@
 
             <div class="custom-card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0 fw-bold">Manajemen Divisi & Kuota</h5>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahDivisi">
-                        <i class="fas fa-plus me-1"></i> Tambah Divisi
+                    <h5 class="mb-0 fw-bold">Manajemen Dinas</h5>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahDinas">
+                        <i class="fas fa-plus me-1"></i> Tambah Dinas
                     </button>
                 </div>
                 <div class="card-body">
@@ -118,35 +111,43 @@
                             <thead>
                                 <tr>
                                     <th style="width: 50px;">No</th>
-                                    <th>Nama Divisi</th>
-                                    <th>Total Kuota</th>
-                                    <th>Sisa Kuota</th>
+                                    <th>Nama Dinas</th>
+                                    <th>Nama Lengkap</th>
+                                    <th>Deskripsi</th>
                                     <th style="width: 150px;">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($divisis as $divisi)
+                                @forelse ($semua_dinas as $dinas)
                                     <tr>
                                         <td class="text-center">{{ $loop->iteration }}</td>
-                                        <td>{{ $divisi->nama_divisi ?? 'N/A' }}</td>
-                                        <td>{{ $divisi->total_kuota ?? 0 }} Peserta</td>
-                                        <td>{{ $divisi->sisa_kuota }} Peserta</td>
+                                        <td>{{ $dinas->nama_dinas ?? 'N/A' }}</td>
+                                        <td>{{ $dinas->nama_lengkap_dinas ?? '-' }}</td>
+                                        <td>{{ Str::limit($dinas->deskripsi, 50) }}</td>
                                         <td>
+                                            {{-- Tombol Edit --}}
                                             <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
-                                                data-bs-target="#modalEditDivisi" data-id="{{ $divisi->id_divisi ?? '' }}"
-                                                data-nama="{{ $divisi->nama_divisi ?? '' }}"
-                                                data-kuota="{{ $divisi->total_kuota ?? 0 }}">
+                                                data-bs-target="#modalEditDinas" data-id="{{ $dinas->id_dinas }}"
+                                                data-nama="{{ $dinas->nama_dinas }}"
+                                                data-namalengkap="{{ $dinas->nama_lengkap_dinas }}"
+                                                data-deskripsi="{{ $dinas->deskripsi }}">
                                                 <i class="fas fa-edit me-1"></i> Edit
                                             </button>
+
+                                            {{-- Tombol Hapus --}}
                                             <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                                data-bs-target="#modalHapusDivisi" data-id="{{ $divisi->id_divisi ?? '' }}"
-                                                data-nama="{{ $divisi->nama_divisi ?? '' }}">
+                                                data-bs-target="#modalHapusDinas" data-id="{{ $dinas->id_dinas }}"
+                                                data-nama="{{ $dinas->nama_dinas }}">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </td>
                                     </tr>
                                 @empty
-                                    ...
+                                    <tr>
+                                        <td colspan="3" class="text-center text-muted py-4">
+                                            Belum ada data dinas.
+                                        </td>
+                                    </tr>
                                 @endforelse
                             </tbody>
                         </table>
@@ -156,27 +157,38 @@
         </main>
     </div>
 
-    <div class="modal fade" id="modalTambahDivisi" tabindex="-1" aria-labelledby="modalTambahDivisiLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="modalTambahDinas" tabindex="-1" aria-labelledby="modalTambahDinasLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalTambahDivisiLabel">Tambah Divisi Baru</h5>
+                    <h5 class="modal-title" id="modalTambahDinasLabel">Tambah Dinas Baru</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ route('admin.divisi.store') }}" method="POST">
+                <form action="{{ route('superadmin.dinas.store') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="nama_divisi" class="form-label">Nama Divisi</label>
-                            <input type="text" class="form-control" name="nama_divisi" id="nama_divisi" required>
+                            <label for="nama_dinas" class="form-label">Nama Dinas</label>
+                            <input type="text" class="form-control" name="nama_dinas" id="nama_dinas" required
+                                placeholder="Contoh: Diskominfotik">
                         </div>
+                    </div>
+
+                    <div class="modal-body">
                         <div class="mb-3">
-                            <label for="kuota" class="form-label">Jumlah Kuota</label>
-                            <input type="number" class="form-control" name="total_kuota" id="kuota" min="1"
+                            <label for="nama_lengkap_dinas" class="form-label">Nama Lengkap Dinas</label>
+                            <input type="text" class="form-control" name="nama_lengkap_dinas" id="nama_lengkap_dinas"
                                 required>
                         </div>
                     </div>
+
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="deskripsi" class="form-label">Deskripsi</label>
+                            <textarea class="form-control" name="deskripsi" id="deskripsi" rows="3" required></textarea>
+                        </div>
+                    </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-primary">Simpan</button>
@@ -186,28 +198,33 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalEditDivisi" tabindex="-1" aria-labelledby="modalEditDivisiLabel" aria-hidden="true">
+    <div class="modal fade" id="modalEditDinas" tabindex="-1" aria-labelledby="modalEditDinasLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalEditDivisiLabel">Edit Divisi & Kuota</h5>
+                    <h5 class="modal-title" id="modalEditDinasLabel">Edit Dinas</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="#" method="POST">
+                <form id="formEditDinas" action="" method="POST">
                     @csrf
                     @method('PUT')
-
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="editNamaDivisi" class="form-label">Nama Divisi</label>
-                            <input type="text" class="form-control" name="nama_divisi" id="editNamaDivisi" required>
+                            <label for="editNamaDinas" class="form-label">Nama Dinas</label>
+                            <input type="text" class="form-control" name="nama_dinas" id="editNamaDinas" required>
                         </div>
                         <div class="mb-3">
-                            <label for="editKuota" class="form-label">Jumlah Kuota</label>
-                            <input type="number" class="form-control" name="total_kuota" id="editKuota" min="1"
+                            <label for="editNamaLengkap" class="form-label">Nama Lengkap Dinas</label>
+                            <input type="text" class="form-control" name="nama_lengkap_dinas" id="editNamaLengkap"
                                 required>
                         </div>
+                        <div class="mb-3">
+                            <label for="editDeskripsi" class="form-label">Deskripsi</label>
+                            <textarea class="form-control" name="deskripsi" id="editDeskripsi" rows="3" required></textarea>
+                        </div>
                     </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-primary">Update</button>
@@ -217,23 +234,20 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalHapusDivisi" tabindex="-1" aria-labelledby="modalHapusDivisiLabel"
+    <div class="modal fade" id="modalHapusDinas" tabindex="-1" aria-labelledby="modalHapusDinasLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalHapusDivisiLabel">Konfirmasi Hapus Divisi</h5>
+                    <h5 class="modal-title" id="modalHapusDinasLabel">Konfirmasi Hapus Dinas</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="#" method="POST">
                     @csrf
                     @method('DELETE')
-                    {{-- <input type="hidden" name="id_divisi" id="hapusIdDivisi"> --}}
-
                     <div class="modal-body">
-                        <p>Anda yakin ingin menghapus divisi: <strong id="hapusNamaDivisi">...</strong>?</p>
-                        <p class="text-danger small">Tindakan ini tidak dapat dibatalkan dan akan menghapus semua data
-                            kuota yang terkait.</p>
+                        <p>Anda yakin ingin menghapus dinas: <strong id="hapusNamaDinas">...</strong>?</p>
+                        <p class="text-danger small">Tindakan ini tidak dapat dibatalkan.</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -245,39 +259,60 @@
     </div>
 
 @endsection
-
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            var modalEdit = document.getElementById('modalEditDivisi');
+            // --- HANDLING MODAL EDIT ---
+            var modalEdit = document.getElementById('modalEditDinas');
             if (modalEdit) {
                 modalEdit.addEventListener('show.bs.modal', function(event) {
+                    // Tombol yang memicu modal
                     var button = event.relatedTarget;
+
+                    // Ambil data dari atribut tombol
                     var id = button.getAttribute('data-id');
                     var nama = button.getAttribute('data-nama');
-                    var kuota = button.getAttribute('data-kuota');
+                    var namaLengkap = button.getAttribute('data-namalengkap');
+                    var deskripsi = button.getAttribute('data-deskripsi');
 
-                    var form = modalEdit.querySelector('form');
-                    form.action = '/kelola-kuota/' + id;
-                    modalEdit.querySelector('#editNamaDivisi').value = nama;
-                    modalEdit.querySelector('#editKuota').value = kuota;
+                    console.log("ID Dinas:", id);
+
+                    // Ambil elemen form berdasarkan ID yang kita buat tadi
+                    var form = document.getElementById('formEditDinas');
+
+                    // Set URL Action form secara dinamis
+                    // Hasilnya akan menjadi: http://.../super-admin/kelola-dinas/1
+                    var baseUrl = "{{ route('superadmin.dinas.index') }}";
+                    form.action = baseUrl + '/' + id;
+
+                    // Isi input form dengan data yang ada
+                    document.getElementById('editNamaDinas').value = nama;
+                    document.getElementById('editNamaLengkap').value = namaLengkap;
+                    document.getElementById('editDeskripsi').value = deskripsi;
                 });
             }
 
-            var modalHapus = document.getElementById('modalHapusDivisi');
+            // --- HANDLING MODAL HAPUS ---
+            var modalHapus = document.getElementById('modalHapusDinas');
             if (modalHapus) {
                 modalHapus.addEventListener('show.bs.modal', function(event) {
                     var button = event.relatedTarget;
                     var id = button.getAttribute('data-id');
                     var nama = button.getAttribute('data-nama');
 
+                    // Pastikan form hapus juga ditarget dengan benar
+                    // Tips: Sebaiknya form hapus juga diberi ID seperti form edit
                     var form = modalHapus.querySelector('form');
-                    form.action = '/kelola-kuota/' + id;
-                    modalHapus.querySelector('#hapusNamaDivisi').textContent = nama;
+                    var baseUrl = "{{ route('superadmin.dinas.index') }}";
+
+                    if (id) {
+                        form.action = baseUrl + '/' + id;
+                    }
+
+                    modalHapus.querySelector('#hapusNamaDinas').textContent = nama;
                 });
             }
-
         });
     </script>
 @endpush

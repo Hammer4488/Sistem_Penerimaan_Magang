@@ -218,11 +218,10 @@ class DinasController extends Controller
 
             DB::commit();
 
-            return redirect()->route('pendaftar.dinas')->with('rejected', 'Pendaftaran telah ditolak.');
+            return redirect()->route('pendaftar.dinas')->with('success', 'Pendaftaran telah ditolak.');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Gagal tolak pendaftaran: ' . $e->getMessage());
-            // Saya tambahkan .$e->getMessage() agar jika masih error, kita tahu detailnya di layar
             return redirect()->route('pendaftar.dinas')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
