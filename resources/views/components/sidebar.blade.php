@@ -192,7 +192,8 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link {{ $active === 'kelolaakun' ? 'active' : '' }}" href="#">
+                        <a class="nav-link {{ $active === 'kelolaakun' ? 'active' : '' }}"
+                            href="{{ route('superadmin.users.index') }}">
                             <i class="fas fa-user-cog"></i>
                             <span>Kelola Akun</span>
                         </a>

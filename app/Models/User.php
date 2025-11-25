@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'id_dinas',
     ];
 
     /**
@@ -46,9 +47,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    
-        public function dinas()
+
+    public function dinas()
     {
-        return $this->belongsTo(Dinas::class, 'id_dinas');
+        // Parameter: ModelTujuan, foreign_key_di_table_users, primary_key_di_table_dinas
+        return $this->belongsTo(Dinas::class, 'id_dinas', 'id_dinas');
     }
+    
 }

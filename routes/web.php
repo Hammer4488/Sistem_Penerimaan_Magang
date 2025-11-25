@@ -9,6 +9,7 @@ use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\RiwayatPendaftaranController;
 use App\Http\Controllers\DivisiController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\AkunController; // <--- 1. IMPORT INI DITAMBAHKAN
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -85,10 +86,15 @@ Route::middleware(['auth', 'role:admin dinas'])->group(function () {
 // Role harus 'super admin'
 Route::middleware(['auth', 'role:super admin'])->group(function () {
 
-    Route::put('/super-admin/kelola-dinas/{id}', [SuperAdminController::class, 'updateDinas'])->name('superadmin.dinas.update');
     Route::get('/super-admin/dashboard', [SuperAdminController::class, 'dashboard'])->name('superadmin.dashboard');
 
     Route::get('/super-admin/kelola-dinas', [SuperAdminController::class, 'indexDinas'])->name('superadmin.dinas.index');
     Route::post('/super-admin/kelola-dinas', [SuperAdminController::class, 'storeDinas'])->name('superadmin.dinas.store');
+    Route::put('/super-admin/kelola-dinas/{id}', [SuperAdminController::class, 'updateDinas'])->name('superadmin.dinas.update');
     Route::delete('/super-admin/kelola-dinas/{id}', [SuperAdminController::class, 'destroyDinas'])->name('superadmin.dinas.destroy');
+
+    Route::get('/super-admin/kelola-akun', [AkunController::class, 'index'])->name('superadmin.users.index');
+    Route::post('/super-admin/kelola-akun', [AkunController::class, 'store'])->name('superadmin.users.store');
+    Route::put('/super-admin/kelola-akun/{id}', [AkunController::class, 'update'])->name('superadmin.users.update');
+    Route::delete('/super-admin/kelola-akun/{id}', [AkunController::class, 'destroy'])->name('superadmin.users.destroy');
 });
