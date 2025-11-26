@@ -129,7 +129,7 @@ class PelamarController extends Controller
             $idGrup = null;
 
             if ($jumlahAnggota > 1) {
-                $idGrup = (string) Str::uuid(); // Membuat ID unik untuk grup
+                $idGrup = (string) Str::uuid(); 
             }
 
             for ($i = 0; $i < $jumlahAnggota; $i++) {

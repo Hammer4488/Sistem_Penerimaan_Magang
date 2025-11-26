@@ -54,7 +54,7 @@
                 <h3 class="fw-bold mt-3">
                     {{ isset($mode) && $mode == 'show' ? 'Detail Formulir Pendaftaran' : 'Formulir Peserta Magang' }}</h3>
                 <p class="text-muted">
-                    {{ isset($mode) && $mode == 'show' ? 'Berikut adalah data yang telah Anda ajukan.' : 'Daftar untuk mengikuti program magang di Pemerintah Kota' }}
+                    {{ isset($mode) && $mode == 'show' ? 'Berikut adalah data yang telah Anda ajukan.' : 'Daftar untuk mengikuti program magang di Pemerintah Kota Banjarmasin' }}
                 </p>
             </div>
             {{-- Akhir Bagian Header --}}
@@ -102,11 +102,13 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Tanggal Mulai</label>
-                            <input type="date" class="form-control" value="{{ $data->tanggal_mulai_magang }}" readonly>
+                            <input type="date" class="form-control"
+                                value="{{ \Carbon\Carbon::parse($data->tanggal_mulai_magang)->format('Y-m-d') }}" readonly>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Tanggal Akhir</label>
-                            <input type="date" class="form-control" value="{{ $data->tanggal_akhir_magang }}" readonly>
+                            <input type="date" class="form-control"
+                                value="{{ \Carbon\Carbon::parse($data->tanggal_akhir_magang)->format('Y-m-d') }}" readonly>
                         </div>
                     </div>
 
@@ -297,17 +299,19 @@
 
                         <div class="col-md-6">
                             <label for="tanggal_mulai_magang" class="form-label">Tanggal Mulai Magang</label>
-                            <input type="date" class="form-control" name="tanggal_mulai_magang"
-                                value="{{ old('tanggal_mulai_magang', $data->tanggal_mulai_magang ?? '') }}"
+                            <input type="date" class="form-control" name="tanggal_mulai_magang" {{-- TAMBAHKAN KODE DI BAWAH INI (min) --}}
+                                min="{{ date('Y-m-d') }}" {{-- ----------------------------- --}}
+                                value="{{ old('tanggal_mulai_magang', isset($data->tanggal_mulai_magang) ? \Carbon\Carbon::parse($data->tanggal_mulai_magang)->format('Y-m-d') : '') }}"
                                 @if (isset($mode) && $mode == 'show') readonly @endif required>
                             @error('tanggal_mulai_magang')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
+
                         <div class="col-md-6">
                             <label for="tanggal_akhir_magang" class="form-label">Tanggal Akhir Magang</label>
-                            <input type="date" class="form-control" name="tanggal_akhir_magang"
-                                value="{{ old('tanggal_akhir_magang', $data->tanggal_akhir_magang ?? '') }}"
+                            <input type="date" class="form-control" name="tanggal_akhir_magang" {{-- Logika yang sama untuk tanggal akhir --}}
+                                value="{{ old('tanggal_akhir_magang', isset($data->tanggal_akhir_magang) ? \Carbon\Carbon::parse($data->tanggal_akhir_magang)->format('Y-m-d') : '') }}"
                                 @if (isset($mode) && $mode == 'show') readonly @endif required>
                             @error('tanggal_akhir_magang')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -430,7 +434,8 @@
                         </div>
                         <div class="col-md-6">
                             <label for="tanggal_mulai_magang" class="form-label">Tanggal Mulai Magang</label>
-                            <input type="date" class="form-control" name="tanggal_mulai_magang"
+                            <input type="date" class="form-control" name="tanggal_mulai_magang" 
+                                min="{{ date('Y-m-d') }}"
                                 value="{{ old('tanggal_mulai_magang') }}" required>
                             @error('tanggal_mulai_magang')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>

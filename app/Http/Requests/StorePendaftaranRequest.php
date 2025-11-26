@@ -40,7 +40,7 @@ class StorePendaftaranRequest extends FormRequest
             'asal_sekolah_universitas.*' => 'required|string|max:255',
             'jurusan_program_studi'  => 'required|array|min:' . $jumlahAnggotaDiminta,
             'jurusan_program_studi.*'  => 'required|string|max:255',
-            'tanggal_mulai_magang'   => 'required|date',
+            'tanggal_mulai_magang'   => 'required|date|after_or_equal:today',
             'tanggal_akhir_magang' => [
                 'required',
                 'date',
@@ -67,6 +67,8 @@ class StorePendaftaranRequest extends FormRequest
             'tanggal_akhir_magang.required' => 'Tanggal akhir magang wajib diisi.',
             'tanggal_akhir_magang.date'     => 'Format tanggal akhir tidak valid.',
             'tanggal_akhir_magang.after_or_equal' => 'Tanggal akhir tidak boleh diatur sebelum tanggal mulai.',
+            'tanggal_mulai_magang.after_or_equal' => 'Tanggal mulai magang tidak boleh kurang dari hari ini.',
+            'tanggal_akhir_magang.after' => 'Tanggal akhir magang harus setelah tanggal mulai.',
 
             // --- Error Array (Min) ---
             'nama_lengkap.min'  => 'Jumlah nama lengkap tidak sesuai dengan jumlah anggota.',
