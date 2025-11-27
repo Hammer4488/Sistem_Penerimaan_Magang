@@ -86,9 +86,8 @@
     <div class="main-content">
         <main class="content-body">
 
-            @if (session('rejected'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    {{-- Ikon Check Circle (Berhasil) tapi background Merah --}}
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <i class="fas fa-check-circle me-2"></i>
                     <strong>Berhasil!</strong> {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -123,7 +122,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0 fw-bold">Data Pendaftar</h5>
                     <div class="w-25">
-                        
+
                         <form action="{{ route('pendaftar.dinas') }}" method="GET">
 
                             <select class="form-select" name="status" onchange="this.form.submit()">
@@ -415,7 +414,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalSetujuiLabel">Setujui & Kirim Surat Balasan</h5>
+                    <h5 class="modal-title" id="modalSetujuiLabel">Kirim Surat Balasan</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('admin.pendaftar.setujui') }}" method="POST" enctype="multipart/form-data">

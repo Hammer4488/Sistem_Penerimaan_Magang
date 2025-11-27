@@ -131,12 +131,12 @@
                             <span>Riwayat Pendaftaran</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link {{ $active === 'suratbalasan' ? 'active' : '' }}" href="#">
                             <i class="fas fa-envelope"></i>
                             <span>Logbook</span>
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
             @elseif (Auth::user()->role === 'admin dinas')
                 {{-- ### MENU BARU UNTUK ADMIN DINAS ### --}}

@@ -158,7 +158,7 @@ class DinasController extends Controller
 
             DB::commit();
 
-            return redirect()->route('pendaftar.dinas')->with('success', 'Surat balasan berhasil dikirim/diperbarui.');
+            return redirect()->route('pendaftar.dinas')->with('success', 'Surat balasan berhasil dikirim.');
         } catch (\Exception $e) {
             DB::rollBack();
             Storage::disk('public')->delete($pathFile ?? '');
