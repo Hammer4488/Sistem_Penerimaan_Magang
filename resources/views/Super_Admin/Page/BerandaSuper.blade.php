@@ -117,7 +117,7 @@
                 </div>
                 <div class="stat-card-body">
                     <h2 class="stat-card-number">{{ $jumlahDinas }}</h2>
-                    <div class="stat-card-subtitle">Instansi yang tersedia</div>
+                    <div class="stat-card-subtitle">Dinas yang tersedia</div>
                 </div>
             </div>
         </div>

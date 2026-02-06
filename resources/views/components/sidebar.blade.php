@@ -101,10 +101,32 @@
         <div>
             <img src="{{ asset('image/LOGO-PEMKOT-BARU.png') }}" alt="Logo" class="logo">
 
+            @php
+                $judul = 'Menu'; // Default
+
+                switch ($active) {
+                    // PELAMAR
+                    case 'berandapelamar': $judul = 'Beranda'; break;
+                    case 'ajukanpelamar': $judul = 'Ajukan Magang'; break;
+                    case 'riwayatpendaftaran': $judul = 'Riwayat Pendaftaran'; break;
+                    
+                    // ADMIN DINAS
+                    case 'berandadinas': $judul = 'Beranda'; break;
+                    case 'pendaftardinas': $judul = 'Verifikasi Pendaftar'; break;
+                    case 'kelolakuota': $judul = 'Kelola Data Divisi'; break;
+
+                    // SUPER ADMIN
+                    case 'dashboard_super': $judul = 'Beranda'; break;
+                    case 'keloladinas': $judul = 'Kelola Data Dinas'; break;
+                    case 'kelolaakun': $judul = 'Kelola Data Akun'; break;
+                }
+            @endphp
+
+            <h3 class="sidebar-title">{{ $judul }}</h3>
+            <hr class="sidebar-divider">
+
             @if (Auth::user()->role === 'pelamar')
                 {{-- ### MENU UNTUK PELAMAR (KODE ASLI ANDA) ### --}}
-                <h3 class="sidebar-title">Beranda</h3>
-                <hr class="sidebar-divider">
 
                 <ul class="nav flex-column">
                     <li class="nav-item">
@@ -140,46 +162,38 @@
                 </ul>
             @elseif (Auth::user()->role === 'admin dinas')
                 {{-- ### MENU BARU UNTUK ADMIN DINAS ### --}}
-                <h3 class="sidebar-title">Admin Dinas</h3>
-                <hr class="sidebar-divider">
 
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        {{-- Ganti '$active' dan 'route()' sesuai kebutuhan Anda --}}
-                        <a class="nav-link {{ $active === 'beranda.dinas' ? 'active' : '' }}"
-                            href="{{ route('beranda.dinas') }}"> {{-- <-- SESUAIKAN ROUTE --}}
+                        <a class="nav-link {{ $active === 'berandadinas' ? 'active' : '' }}"
+                            href="{{ route('beranda.dinas') }}"> 
                             <i class="fas fa-tachometer-alt"></i>
                             <span>Beranda</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        {{-- Ganti '$active' dan 'route()' sesuai kebutuhan Anda --}}
-                        <a class="nav-link {{ $active === 'pendaftar.dinas' ? 'active' : '' }}"
-                            href="{{ route('pendaftar.dinas') }}"> {{-- <-- SESUAIKAN ROUTE --}}
+                        <a class="nav-link {{ $active === 'pendaftardinas' ? 'active' : '' }}"
+                            href="{{ route('pendaftar.dinas') }}"> 
                             <i class="fas fa-users"></i>
-                            <span>Pendaftar Magang</span>
+                            <span>Verifikasi Pendaftar</span>
                         </a>
                     </li>
                     <li class="nav-item">
-
-                        {{-- **PERBAIKAN 1: Cocokkan $active dengan 'kelolakuota' --}}
-                        <a class="nav-link {{ $active === 'kelolakuota' ? 'active' : '' }}" {{-- **PERBAIKAN 2: Gunakan route 'admin.divisi.index' --}}
+                        <a class="nav-link {{ $active === 'kelolakuota' ? 'active' : '' }}" }
                             href="{{ route('Admin_Dinas.page.KuotaDinas') }}">
                             <i class="fas fa-chart-pie"></i>
-                            <span>Kelola Kuota Divisi</span>
+                            <span>Kelola Data Divisi</span>
                         </a>
                     </li>
                 </ul>
             @elseif (Auth::user()->role === 'super admin')
-                <h3 class="sidebar-title">Super Admin</h3>
-                <hr class="sidebar-divider">
 
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link {{ $active === 'dashboard_super' ? 'active' : '' }}"
                             href="{{ route('superadmin.dashboard') }}">
                             <i class="fas fa-tachometer-alt"></i>
-                            <span>Dashboard</span>
+                            <span>Beranda</span>
                         </a>
                     </li>
 
@@ -187,7 +201,7 @@
                         <a class="nav-link {{ $active === 'keloladinas' ? 'active' : '' }}"
                             href="{{ route('superadmin.dinas.index') }}">
                             <i class="fas fa-building"></i>
-                            <span>Kelola Dinas</span>
+                            <span>Kelola Data Dinas</span>
                         </a>
                     </li>
 
@@ -195,7 +209,7 @@
                         <a class="nav-link {{ $active === 'kelolaakun' ? 'active' : '' }}"
                             href="{{ route('superadmin.users.index') }}">
                             <i class="fas fa-user-cog"></i>
-                            <span>Kelola Akun</span>
+                            <span>Kelola Data Akun</span>
                         </a>
                     </li>
 

@@ -186,35 +186,37 @@
                             <div class="card quota-card h-100">
                                 <div class="card-body p-4 position-relative">
 
-                                    {{-- Badge dinamis --}}
+                                    {{-- Badge dinamis
                                     @if ($sisaKuota > 0)
                                         <span
                                             class="badge bg-success position-absolute top-0 end-0 mt-3 me-3">Tersedia</span>
                                     @else
                                         <span class="badge bg-danger position-absolute top-0 end-0 mt-3 me-3">Kuota
                                             Terpenuhi</span>
-                                    @endif
+                                    @endif --}}
 
                                     <h5 class="fw-bold">{{ $dinas->nama_dinas }}</h5>
-                                    <p class="text-muted small mb-1">{{ $dinas->nama_lengkap_dinas }}</p>
+                                    <p class="text-muted small mb-0">{{ $dinas->nama_lengkap_dinas }}</p>
                                     <p class="card-text small">{{ $dinas->deskripsi }}</p>
                                 </div>
 
                                 <div class="card-footer bg-transparent border-0 p-4 pt-0">
-                                    <div class="row text-center g-2 mb-3">
-                                        {{-- Statistik Kuota --}}
+                                    {{-- <div class="row text-center g-2 mb-3">
+                                        
                                         <div class="col-4">
                                             <div class="stat-box">
                                                 <div class="number text-primary">{{ $totalKuotaDinas }}</div>
                                                 <div class="label">Total Kuota</div>
                                             </div>
                                         </div>
+                                        
                                         <div class="col-4">
                                             <div class="stat-box">
                                                 <div class="number text-danger">{{ $dinas->pendaftaran_count }}</div>
                                                 <div class="label">Kuota Terisi</div>
                                             </div>
                                         </div>
+
                                         <div class="col-4">
                                             <div class="stat-box">
                                                 <div class="number text-success">
@@ -222,9 +224,9 @@
                                                 <div class="label">Sisa Kuota</div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
 
-                                    <div class="mt-4">
+                                    <div class="mt-0">
                                         @if (in_array($dinas->id_dinas, $pendaftaranPengguna))
                                             <a href ="#" class="btn btn-success w-100 fw-bold disabled"
                                                 style="opacity: 0.8;">
@@ -235,10 +237,10 @@
                                                 style="opacity: 0.7;">
                                                 <i class="fas fa-ban me-2"></i> Sudah Mendaftar
                                             </a>
-                                        @elseif ($sisaKuota <= 0)
+                                        {{-- @elseif ($sisaKuota <= 0)
                                             <a href="#" class="btn btn-secondary w-100 fw-bold disabled">
                                                 Kuota Penuh
-                                            </a>
+                                            </a> --}}
                                         @else
                                             <a href="#" class="btn btn-primary w-100 fw-bold" data-bs-toggle="modal"
                                                 data-bs-target="#pilihJenisPendaftaranModal"

@@ -41,11 +41,11 @@
                         <a href="{{ route('daftar') }}" class="btn btn-light btn-lg"><i class="fas fa-user-plus me-2"></i>Buat Akun Sekarang</a>
                         <a href="{{ route('login') }}" class="btn btn-light btn-lg"><i class="fas fa-right-to-bracket me-2"></i>Login</a>
                     </div>
-                    <div class="mt-3">
+                    {{-- <div class="mt-3">
                         <a href="{{ route('kuotamagang') }}" class="btn btn-primary btn-lg">
                             <i class="fas fa-chart-bar me-2"></i>Ayo Lihat Kuota Divisi Sebelum Mendaftar
                         </a>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>

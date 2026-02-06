@@ -59,6 +59,75 @@
                 padding: 20px 15px;
             }
         }
+        .pagination .page-item:first-child,
+        .pagination .page-item:last-child {
+            display: none !important;
+        }
+
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: none;
+        }
+
+        .pagination-info {
+            color: #6c757d;
+            font-size: 0.875rem; /* Ukuran font kecil rapi */
+        }
+
+        .pagination-group {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .page-item-custom {
+            margin: 0;
+        }
+
+        .page-link-custom {
+            display: block;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            text-decoration: none;
+            color: #0d6efd; /* Warna teks biru standar */
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        /* Supaya kotak-kotaknya nempel rapi */
+        .page-item-custom:first-child .page-link-custom {
+            border-top-left-radius: 0.25rem;
+            border-bottom-left-radius: 0.25rem;
+        }
+
+        .page-item-custom:last-child .page-link-custom {
+            border-top-right-radius: 0.25rem;
+            border-bottom-right-radius: 0.25rem;
+        }
+        
+        /* Hilangkan double border di tengah */
+        .page-item-custom:not(:first-child) .page-link-custom {
+            margin-left: -1px;
+        }
+
+        /* STYLE SAAT AKTIF (Kotak Biru) */
+        .page-link-custom.active {
+            z-index: 3;
+            color: #fff !important;
+            background-color: #0d6efd !important; /* Biru Utama */
+            border-color: #0d6efd !important;
+        }
+
+        .page-link-custom:hover {
+            background-color: #e9ecef;
+        }
     </style>
 @endpush
 
@@ -116,10 +185,10 @@
                                 </select>
                             </div>
                             <div class="col-md-9">
-                                <label for="search" class="form-label small text-muted">Cari Nama / Email</label>
+                                <label for="search" class="form-label small text-muted">Cari Nama User / Email</label>
                                 <div class="input-group">
                                     <input type="text" class="form-control" name="search"
-                                        placeholder="Cari nama atau email..." value="{{ request('search') }}">
+                                        placeholder="Cari nama user atau email..." value="{{ request('search') }}">
                                     <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search"></i>
                                         Cari</button>
                                 </div>
@@ -132,10 +201,10 @@
                             <thead>
                                 <tr>
                                     <th style="width: 50px;">No</th>
-                                    <th>Nama</th>
+                                    <th>Nama User</th>
                                     <th>Email</th>
                                     <th>Role</th>
-                                    <th>Instansi (Dinas)</th>
+                                    <th>Instansi</th>
                                     <th style="width: 150px;">Aksi</th>
                                 </tr>
                             </thead>
@@ -162,8 +231,8 @@
                                             {{-- Menampilkan nama dinas jika ada relasi --}}
                                             {{ $user->dinas->nama_dinas ?? '-' }}
                                         </td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
+                                        <td class="text-nowrap">
+                                            <button class="btn btn-sm btn-outline-secondary me-1" data-bs-toggle="modal"
                                                 data-bs-target="#modalEditUser" data-id="{{ $user->id }}"
                                                 data-name="{{ $user->name }}" data-email="{{ $user->email }}"
                                                 data-role="{{ $user->role }}" data-dinas="{{ $user->id_dinas }}">
@@ -173,7 +242,7 @@
                                             <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
                                                 data-bs-target="#modalHapusUser" data-id="{{ $user->id }}"
                                                 data-name="{{ $user->name }}">
-                                                <i class="fas fa-trash-alt"></i>
+                                                <i class="fas fa-trash-alt"></i> Hapus
                                             </button>
                                         </td>
                                     </tr>
@@ -188,9 +257,31 @@
                         </table>
                     </div>
 
-                    {{-- Pagination (Optional) --}}
-                    <div class="d-flex justify-content-end mt-3">
-                        {{ $users->withQueryString()->links() }}
+                    <div class="pagination-container">
+                        
+                        <div class="pagination-info">
+                            Menampilkan 
+                            <span class="fw-bold text-dark">{{ $users->firstItem() }}</span> 
+                            sampai
+                            <span class="fw-bold text-dark">{{ $users->lastItem() }}</span> 
+                            dari
+                            <span class="fw-bold text-dark">{{ $users->total() }}</span> 
+                            data
+                        </div>
+
+                        @if ($users->hasPages())
+                            <ul class="pagination-group">
+                                @for ($i = 1; $i <= $users->lastPage(); $i++)
+                                    <li class="page-item-custom">
+                                        <a href="{{ $users->url($i) }}" 
+                                           class="page-link-custom {{ ($users->currentPage() == $i) ? 'active' : '' }}">
+                                            {{ $i }}
+                                        </a>
+                                    </li>
+                                @endfor
+                            </ul>
+                        @endif
+                        
                     </div>
                 </div>
             </div>
@@ -209,7 +300,7 @@
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="name" class="form-label">Nama Lengkap</label>
+                            <label for="name" class="form-label">Nama User</label>
                             <input type="text" class="form-control" name="name" required placeholder="Nama User">
                         </div>
                         <div class="mb-3">
@@ -268,7 +359,7 @@
                     @method('PUT')
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="editName" class="form-label">Nama Lengkap</label>
+                            <label for="editName" class="form-label">Nama User</label>
                             <input type="text" class="form-control" name="name" id="editName" required>
                         </div>
                         <div class="mb-3">
@@ -283,7 +374,7 @@
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
-                            <small class="text-muted text-small fst-italic">Kosongkan jika tidak ingin mengubah
+                            <small class="text-muted">Kosongkan jika tidak ingin mengubah
                                 password.</small>
                         </div>
                         <div class="mb-3">
@@ -319,14 +410,14 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalHapusUserLabel">Konfirmasi Hapus</h5>
+                    <h5 class="modal-title" id="modalHapusUserLabel">Konfirmasi Hapus User</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="formHapusUser" action="" method="POST">
                     @csrf
                     @method('DELETE')
                     <div class="modal-body">
-                        <p>Anda yakin ingin menghapus user: <strong id="hapusNamaUser">...</strong>?</p>
+                        <p>Anda yakin ingin menghapus user <strong id="hapusNamaUser">...</strong>?</p>
                         <p class="text-danger small">Data yang dihapus tidak dapat dikembalikan.</p>
                     </div>
                     <div class="modal-footer">

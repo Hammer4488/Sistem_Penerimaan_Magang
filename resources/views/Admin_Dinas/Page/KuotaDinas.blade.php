@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Kelola Kuota')
+@section('title', 'Kelola Data Divisi')
 
 @push('styles')
     <style>
@@ -107,7 +107,7 @@
 
             <div class="custom-card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0 fw-bold">Manajemen Divisi & Kuota</h5>
+                    <h5 class="mb-0 fw-bold">Manajemen Divisi</h5>
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahDivisi">
                         <i class="fas fa-plus me-1"></i> Tambah Divisi
                     </button>
@@ -119,8 +119,6 @@
                                 <tr>
                                     <th style="width: 50px;">No</th>
                                     <th>Nama Divisi</th>
-                                    <th>Total Kuota</th>
-                                    <th>Sisa Kuota</th>
                                     <th style="width: 150px;">Aksi</th>
                                 </tr>
                             </thead>
@@ -129,19 +127,19 @@
                                     <tr>
                                         <td class="text-center">{{ $loop->iteration }}</td>
                                         <td>{{ $divisi->nama_divisi ?? 'N/A' }}</td>
-                                        <td>{{ $divisi->total_kuota ?? 0 }} Peserta</td>
-                                        <td>{{ $divisi->sisa_kuota }} Peserta</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
+                                        <td class="text-nowrap">
+
+                                            <button class="btn btn-sm btn-outline-secondary me-1" data-bs-toggle="modal"
                                                 data-bs-target="#modalEditDivisi" data-id="{{ $divisi->id_divisi ?? '' }}"
                                                 data-nama="{{ $divisi->nama_divisi ?? '' }}"
                                                 data-kuota="{{ $divisi->total_kuota ?? 0 }}">
                                                 <i class="fas fa-edit me-1"></i> Edit
                                             </button>
+
                                             <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
                                                 data-bs-target="#modalHapusDivisi" data-id="{{ $divisi->id_divisi ?? '' }}"
                                                 data-nama="{{ $divisi->nama_divisi ?? '' }}">
-                                                <i class="fas fa-trash-alt"></i>
+                                                <i class="fas fa-trash-alt me-1"></i> Hapus
                                             </button>
                                         </td>
                                     </tr>
@@ -171,11 +169,6 @@
                             <label for="nama_divisi" class="form-label">Nama Divisi</label>
                             <input type="text" class="form-control" name="nama_divisi" id="nama_divisi" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="kuota" class="form-label">Jumlah Kuota</label>
-                            <input type="number" class="form-control" name="total_kuota" id="kuota" min="1"
-                                required>
-                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -190,7 +183,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalEditDivisiLabel">Edit Divisi & Kuota</h5>
+                    <h5 class="modal-title" id="modalEditDivisiLabel">Edit Divisi</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="#" method="POST">
@@ -201,11 +194,6 @@
                         <div class="mb-3">
                             <label for="editNamaDivisi" class="form-label">Nama Divisi</label>
                             <input type="text" class="form-control" name="nama_divisi" id="editNamaDivisi" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editKuota" class="form-label">Jumlah Kuota</label>
-                            <input type="number" class="form-control" name="total_kuota" id="editKuota" min="1"
-                                required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -228,12 +216,10 @@
                 <form action="#" method="POST">
                     @csrf
                     @method('DELETE')
-                    {{-- <input type="hidden" name="id_divisi" id="hapusIdDivisi"> --}}
 
                     <div class="modal-body">
-                        <p>Anda yakin ingin menghapus divisi: <strong id="hapusNamaDivisi">...</strong>?</p>
-                        <p class="text-danger small">Tindakan ini tidak dapat dibatalkan dan akan menghapus semua data
-                            kuota yang terkait.</p>
+                        <p>Anda yakin ingin menghapus divisi <strong id="hapusNamaDivisi">...</strong>?</p>
+                        <p class="text-danger small">Tindakan ini tidak dapat dibatalkan.</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>

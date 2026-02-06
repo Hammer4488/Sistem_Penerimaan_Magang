@@ -149,9 +149,9 @@
                     <div class="register-link">
                         <a href="{{ route('daftar') }}">Daftar disini</a>
                     </div>
-                    <div class="forgot-password">
+                    {{-- <div class="forgot-password">
                         <a href="#">Lupa password?</a>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="d-grid">

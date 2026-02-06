@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dinas;
+use App\Models\Divisi;
 use App\Models\Dokumen;
 use App\Models\Pendaftaran;
 use Illuminate\Support\Facades\Auth;
@@ -31,12 +32,26 @@ class DinasController extends Controller
         $totalKuota = $dinas ? $dinas->divisi()->sum('total_kuota') : 0;
         $sisaKuota = $totalKuota - $jumlahDiterima;
 
+        $dinas = Dinas::find($id_dinas);
+
+        // --- BAGIAN INI DIUBAH (LOGIKA BARU) ---
+
+        // DULU: Menjumlahkan angka kuota ($dinas->divisi()->sum('total_kuota'))
+        // SEKARANG: Menghitung ada berapa divisi ($dinas->divisi()->count())
+        $totalDivisi = $dinas ? $dinas->divisi()->count() : 0;
+
+        // Variabel lama kita set 0 supaya view tidak error jika masih ada yang memanggilnya
+        $sisaKuota = 0;
+        $totalKuota = 0;
+
         return view('Admin_Dinas.page.BerandaDinas', [
             'active'         => 'berandadinas',
             'jumlahDiproses' => $jumlahDiproses,
             'jumlahDiterima' => $jumlahDiterima,
-            'sisaKuota'      => $sisaKuota,
-            'totalKuota'     => $totalKuota,
+
+            'totalDivisi'    => $totalDivisi,
+            // 'sisaKuota'      => $sisaKuota,
+            // 'totalKuota'     => $totalKuota,
             'namaDinas'      => $dinas ? $dinas->nama_dinas : 'Admin Dinas'
         ]);
     }
@@ -261,5 +276,23 @@ class DinasController extends Controller
 
             return back()->with('error', 'Terjadi kesalahan saat menghapus surat balasan.');
         }
+    }
+
+    public function tandaiSelesai($id)
+    {
+        // 1. Cari data berdasarkan ID
+        $pendaftar = Pendaftaran::findOrFail($id);
+
+        // 2. CEK KONDISI: Apakah statusnya 'diterima'?
+        if ($pendaftar->status !== 'diterima') {
+            // Jika status BUKAN 'diterima', tolak prosesnya
+            return redirect()->back()->with('error', 'Gagal: Hanya peserta dengan status "Diterima" yang bisa diselesaikan.');
+        }
+
+        // 3. Jika lolos pengecekan, ubah status
+        $pendaftar->status = 'selesai';
+        $pendaftar->save();
+
+        return redirect()->back()->with('success', 'Status peserta berhasil diubah menjadi Selesai.');
     }
 }

@@ -112,7 +112,7 @@
                                 <tr>
                                     <th style="width: 50px;">No</th>
                                     <th>Nama Dinas</th>
-                                    <th>Nama Lengkap</th>
+                                    <th>Nama Lengkap Dinas</th>
                                     <th>Deskripsi</th>
                                     <th style="width: 150px;">Aksi</th>
                                 </tr>
@@ -124,9 +124,8 @@
                                         <td>{{ $dinas->nama_dinas ?? 'N/A' }}</td>
                                         <td>{{ $dinas->nama_lengkap_dinas ?? '-' }}</td>
                                         <td>{{ Str::limit($dinas->deskripsi, 50) }}</td>
-                                        <td>
-                                            {{-- Tombol Edit --}}
-                                            <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
+                                        <td class="text-nowrap">
+                                            <button class="btn btn-sm btn-outline-secondary me-1" data-bs-toggle="modal"
                                                 data-bs-target="#modalEditDinas" data-id="{{ $dinas->id_dinas }}"
                                                 data-nama="{{ $dinas->nama_dinas }}"
                                                 data-namalengkap="{{ $dinas->nama_lengkap_dinas }}"
@@ -134,12 +133,12 @@
                                                 <i class="fas fa-edit me-1"></i> Edit
                                             </button>
 
-                                            {{-- Tombol Hapus --}}
                                             <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
                                                 data-bs-target="#modalHapusDinas" data-id="{{ $dinas->id_dinas }}"
                                                 data-nama="{{ $dinas->nama_dinas }}">
-                                                <i class="fas fa-trash-alt"></i>
+                                                <i class="fas fa-trash-alt"></i> Hapus
                                             </button>
+
                                         </td>
                                     </tr>
                                 @empty
@@ -246,7 +245,7 @@
                     @csrf
                     @method('DELETE')
                     <div class="modal-body">
-                        <p>Anda yakin ingin menghapus dinas: <strong id="hapusNamaDinas">...</strong>?</p>
+                        <p>Anda yakin ingin menghapus dinas <strong id="hapusNamaDinas">...</strong>?</p>
                         <p class="text-danger small">Tindakan ini tidak dapat dibatalkan.</p>
                     </div>
                     <div class="modal-footer">

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Lihat Kuota Magang')
+@section('title', 'Lihat Instansi')
 
 @push('styles')
     <style>
@@ -57,57 +57,25 @@
     <x-navbar />
     <div class="container py-5">
         <div class="text-center mb-5">
-            <h1 class="display-5 fw-bold">Kuota Magang per Dinas</h1>
-            <p class="lead text-muted">Lihat keseterdiaan kuota magang di setiap dinas Pemerintah Kota Banjarmasin</p>
+            <h1 class="display-5 fw-bold">Lihat Instansi Yang Ada</h1>
+            <p class="lead text-muted">Lihat keseterdiaan dinas di Pemerintah Kota Banjarmasin</p>
         </div>
 
         <div class="row g-4">
             @forelse ($dinasList as $dinas)
-                @php
-                    $totalKuotaDinas = $dinas->divisi_sum_total_kuota ?? 0;
-                    $kuotaTerisi = $dinas->pendaftaran_count;
-                    $sisaKuota = $totalKuotaDinas - $kuotaTerisi;
-                @endphp
 
                 <div class="col-lg-6">
                     <div class="card quota-card h-100">
                         <div class="card-body p-4 position-relative">
 
                             {{-- Badge dinamis berdasarkan Sisa Kuota --}}
-                            @if ($sisaKuota > 0)
-                                <span class="badge bg-success position-absolute top-0 end-0 mt-3 me-3">Tersedia</span>
-                            @else
-                                <span class="badge bg-danger position-absolute top-0 end-0 mt-3 me-3">Kuota
-                                    Terpenuhi</span>
-                            @endif
 
                             {{-- Tampilkan data dinamis dari database --}}
                             <h5 class="fw-bold">{{ $dinas->nama_dinas }}</h5>
                             <p class="text-muted small mb-3">{{ $dinas->nama_lengkap_dinas }}</p>
                             <p class="card-text">{{ $dinas->deskripsi }}</p>
                         </div>
-                        <div class="card-footer bg-transparent border-0 p-4 pt-0">
-                            <div class="row text-center g-2">
-                                <div class="col-4">
-                                    <div class="stat-box">
-                                        <div class="number text-primary">{{ $totalKuotaDinas }}</div>
-                                        <div class="label">Total Kuota</div>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="stat-box">
-                                        <div class="number text-danger">{{ $kuotaTerisi }}</div>
-                                        <div class="label">Kuota Terisi</div>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="stat-box">
-                                        <div class="number text-success">{{ $sisaKuota }}</div>
-                                        <div class="label">Sisa Kuota</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             @empty

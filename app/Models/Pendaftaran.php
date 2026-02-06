@@ -31,6 +31,7 @@ class Pendaftaran extends Model
         'tanggal_mulai_magang',
         'tanggal_akhir_magang',
         'status',
+        'keterangan_status',
         
     ];
 

@@ -26,7 +26,7 @@
         /* Styling untuk kartu daftar */
         .register-card {
             width: 100%;
-            max-width: 380px; /* <--- NILAI SUDAH DIPERKECIL */
+            max-width: 500px; /* <--- NILAI SUDAH DIPERKECIL */
             background-color: #ffffff;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -144,7 +144,7 @@
                     </div>
                 </div>
 
-                <div class="text-end mb-4">
+                <div class="text-start mb-4">
                     <div class="login-link">
                         <a href="{{ route('login') }}">Sudah terdaftar?</a>
                     </div>

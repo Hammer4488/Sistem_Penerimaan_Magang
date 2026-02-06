@@ -52,9 +52,9 @@
             <div class="text-center mb-4">
                 <span class="form-header-icon">{!! isset($mode) && $mode == 'show' ? '📄' : '⬆️' !!}</span>
                 <h3 class="fw-bold mt-3">
-                    {{ isset($mode) && $mode == 'show' ? 'Detail Formulir Pendaftaran' : 'Formulir Peserta Magang' }}</h3>
+                    {{ isset($mode) && $mode == 'show' ? 'Detail Formulir Pendaftaran' : 'Formulir Pendaftaran Magang' }}</h3>
                 <p class="text-muted">
-                    {{ isset($mode) && $mode == 'show' ? 'Berikut adalah data yang telah Anda ajukan.' : 'Daftar untuk mengikuti program magang di Pemerintah Kota Banjarmasin' }}
+                    {{ isset($mode) && $mode == 'show' ? 'Berikut adalah data yang telah Anda ajukan.' : 'Daftar untuk mengikuti program magang di Pemerintahan Kota Banjarmasin' }}
                 </p>
             </div>
             {{-- Akhir Bagian Header --}}
@@ -89,7 +89,7 @@
                     ============================================================
                     --}}
 
-                    <h5 class="fw-bold mt-4 mb-3">Data Pengajuan Kelompok</h5>
+                    <h5 class="fw-bold mt-4 mb-3">Detail Pendaftaran Kelompok</h5>
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
                             <label class="form-label">Dinas</label>
@@ -101,12 +101,12 @@
                                 readonly>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Tanggal Mulai</label>
+                            <label class="form-label">Tanggal Mulai Magang</label>
                             <input type="date" class="form-control"
                                 value="{{ \Carbon\Carbon::parse($data->tanggal_mulai_magang)->format('Y-m-d') }}" readonly>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Tanggal Akhir</label>
+                            <label class="form-label">Tanggal Akhir Magang</label>
                             <input type="date" class="form-control"
                                 value="{{ \Carbon\Carbon::parse($data->tanggal_akhir_magang)->format('Y-m-d') }}" readonly>
                         </div>
@@ -150,7 +150,7 @@
                         $cv = $data->dokumen->firstWhere('jenis_dokumen', 'cv');
                     @endphp
                     <div class="col-12 mb-3">
-                        <label class="form-label fw-bold">Surat Pengantar</label><br>
+                        <label class="form-label">Surat Pengantar</label><br>
                         @if ($surat)
                             <a href="{{ asset('storage/' . $surat->path_file) }}" target="_blank"
                                 class="btn btn-outline-secondary btn-sm"><i class="fas fa-eye me-1"></i> Lihat File
@@ -160,7 +160,7 @@
                         @endif
                     </div>
                     <div class="col-12 mb-3">
-                        <label class="form-label fw-bold">Curriculum Vitae (CV)</label><br>
+                        <label class="form-label">Curriculum Vitae (CV)</label><br>
                         @if ($cv)
                             <a href="{{ asset('storage/' . $cv->path_file) }}" target="_blank"
                                 class="btn btn-outline-secondary btn-sm"><i class="fas fa-eye me-1"></i> Lihat
@@ -172,7 +172,7 @@
                 @elseif ($loopCount == 1)
                     <h5 class="fw-bold mt-4 mb-3">
                         @if (isset($mode) && $mode == 'show')
-                            Detail Pendaftar
+                            Detail Pendaftaran Individu
                         @else
                         @endif
                     </h5>
@@ -249,7 +249,6 @@
                             @enderror
                         </div>
 
-                        {{-- Dokumen (Link atau Input) --}}
                         @if (isset($mode) && $mode == 'show')
                             @php
                                 $surat = $data->dokumen->firstWhere('jenis_dokumen', 'surat_pengantar');

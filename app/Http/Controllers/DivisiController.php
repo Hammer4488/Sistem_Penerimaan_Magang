@@ -33,7 +33,7 @@ class DivisiController extends Controller
     {
         $request->validate([
             'nama_divisi' => 'required|string|max:255',
-            'total_kuota' => 'required|integer|min:1',
+            // 'total_kuota' => 'required|integer|min:1',
         ]);
 
         $id_dinas_admin = Auth::user()->id_dinas;
@@ -41,7 +41,7 @@ class DivisiController extends Controller
         Divisi::create([
             'id_dinas' => $id_dinas_admin,
             'nama_divisi' => $request->nama_divisi,
-            'total_kuota' => $request->total_kuota,
+            // 'total_kuota' => $request->total_kuota,
         ]);
 
         return redirect()->route('Admin_Dinas.page.KuotaDinas')
@@ -52,7 +52,7 @@ class DivisiController extends Controller
     {
         $request->validate([
             'nama_divisi' => 'required|string|max:255',
-            'total_kuota' => 'required|integer|min:1',
+            // 'total_kuota' => 'required|integer|min:1',
         ]);
 
         if ($divisi->id_dinas != Auth::user()->id_dinas) {
@@ -61,19 +61,19 @@ class DivisiController extends Controller
         }
 
         $namaBerubah  = $divisi->nama_divisi != $request->nama_divisi;
-        $kuotaBerubah = $divisi->total_kuota != $request->total_kuota;
+        // $kuotaBerubah = $divisi->total_kuota != $request->total_kuota;
 
         $divisi->update([
             'nama_divisi' => $request->nama_divisi,
-            'total_kuota' => $request->total_kuota,
+            // 'total_kuota' => $request->total_kuota,
         ]);
 
-        if ($namaBerubah && $kuotaBerubah) {
-            $pesan = 'Divisi dan Kuota berhasil diperbarui.';
-        } elseif ($namaBerubah) {
-            $pesan = 'Nama Divisi berhasil diperbarui.';
-        } elseif ($kuotaBerubah) {
-            $pesan = 'Kuota berhasil diperbarui.';
+        if ($namaBerubah) {
+            $pesan = 'Divisi berhasil diperbarui.';
+        // } elseif ($namaBerubah) {
+        //     $pesan = 'Nama Divisi berhasil diperbarui.';
+        // } elseif ($kuotaBerubah) {
+        //     $pesan = 'Kuota berhasil diperbarui.';
         } else {
             $pesan = 'Data berhasil disimpan (Tidak ada perubahan).';
         }

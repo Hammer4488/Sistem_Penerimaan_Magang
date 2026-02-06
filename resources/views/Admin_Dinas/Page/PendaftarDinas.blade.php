@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Pendaftar Magang')
+@section('title', 'Verifikasi Pendaftar')
 
 
 @push('styles')
@@ -136,6 +136,8 @@
                                 <option value="ditolak" {{ request('status') == 'ditolak' ? 'selected' : '' }}>
                                     Ditolak
                                 </option>
+                                <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai
+                                </option>
                             </select>
                         </form>
                     </div>
@@ -146,7 +148,7 @@
                             <thead>
                                 <tr>
                                     <th>Nama Lengkap</th>
-                                    <th>Asal Instansi</th>
+                                    <th>Asal Sekolah/Universitas</th>
                                     <th>Tanggal Daftar</th>
                                     <th>Status</th>
                                     <th>Aksi</th>
@@ -179,6 +181,7 @@
                                                     'jurusan' => $anggota->jurusan_program_studi,
                                                     'no_hp' => $anggota->no_hp_aktif,
                                                     'alamat' => $anggota->alamat,
+                                                    'detailEmail' => $anggota->user->email ?? '-',
                                                 ];
                                             });
 
@@ -208,6 +211,8 @@
                                                 <span class="badge bg-success">Diterima</span>
                                             @elseif ($pendaftaran->status == 'ditolak')
                                                 <span class="badge bg-danger">Ditolak</span>
+                                            @elseif ($pendaftaran->status == 'selesai')
+                                                <span class="badge bg-secondary">Selesai Magang</span>
                                             @endif
                                         </td>
                                         <td>
@@ -278,6 +283,7 @@
                                                     <i class="fas fa-check me-1"></i> Setujui
                                                 </button>
 
+
                                                 <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
                                                     data-bs-target="#modalTolak"
                                                     data-pendaftar-id="{{ $pendaftaran->id_pendaftaran }}"
@@ -297,20 +303,29 @@
                                                     data-nama="{{ $pendaftaran->nama_lengkap }}">
                                                     <i class="fas fa-upload me-1"></i> Kirim Surat
                                                 </button>
+
+                                                {{-- GANTI FORM YANG TADI DENGAN TOMBOL INI --}}
+                                                <button class="btn btn-sm btn-success" data-bs-toggle="modal"
+                                                    data-bs-target="#modalSelesai"
+                                                    data-id="{{ $pendaftaran->id_pendaftaran }}"
+                                                    data-nama="{{ $pendaftaran->nama_lengkap }}">
+                                                    <i class="fas fa-check-double me-1"></i> Selesai
+                                                </button>
+
                                                 @if ($suratBalasan)
                                                     <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
                                                         data-bs-target="#modalHapusSurat"
                                                         data-pendaftar-id="{{ $pendaftaran->id_pendaftaran }}"
                                                         data-suraturl="{{ Storage::url($suratBalasan->path_file) }}">
-                                                        <i class="fas fa-trash-alt"></i>
+                                                        <i class="fas fa-trash-alt me-1"></i> Hapus
                                                     </button>
                                                 @endif
                                             @elseif ($pendaftaran->status == 'ditolak')
                                                 {{-- --- STATUS: DITOLAK --- --}}
                                                 {!! $detailButtonHtml !!} {{-- Cetak tombol detail dinamis --}}
 
-                                                <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
-                                                    data-bs-target="#modalLihatAlasan"
+                                                <button class="btn btn-sm btn-outline-danger" type="button"
+                                                    data-bs-toggle="modal" data-bs-target="#modalLihatAlasan"
                                                     data-alasan="{{ $pendaftaran->keterangan_status }}">
                                                     <i class="fas fa-info-circle me-1"></i> Lihat Alasan
                                                 </button>
@@ -338,7 +353,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalTolakLabel">Tolak Pendaftaran</h5>
+                    <h5 class="modal-title" id="modalTolakLabel">Tolak Pendaftar</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -441,6 +456,42 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modalSelesai" tabindex="-1" aria-labelledby="modalSelesaiLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalSelesaiLabel">Konfirmasi Selesai Magang</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                {{-- Form Action akan di-update via Javascript --}}
+                <form id="formSelesai" action="" method="POST">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="modal-body">
+                        <div class="text-center mb-3">
+                            <i class="fas fa-check-circle text-success fa-3x"></i>
+                        </div>
+                        <p class="text-center">
+                            Apakah Anda yakin ingin menandai peserta <br>
+                            <strong id="namaPesertaSelesai" class="fs-5">...</strong> <br>
+                            sebagai <strong>Selesai Magang</strong>?
+                        </p>
+                        <p class="text-center text-muted small">
+                            Status akan berubah menjadi "Selesai" dan tidak bisa dikembalikan ke "Diterima".
+                        </p>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-success">Ya, Selesai</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="modalHapusSurat" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -499,13 +550,13 @@
 
                     <h6 class="text-muted fw-bold mb-3">Data Akademik & Magang</h6>
                     <dl class="row detail-info-box">
-                        <dt class="col-sm-4">Asal Instansi</dt>
+                        <dt class="col-sm-4">Asal Sekolah/Universitas</dt>
                         <dd class="col-sm-8" id="detailInstansi">...</dd>
-                        <dt class="col-sm-4">Jurusan</dt>
+                        <dt class="col-sm-4">Jurusan/Program Studi</dt>
                         <dd class="col-sm-8" id="detailJurusan">...</dd>
-                        <dt class="col-sm-4">Tanggal Mulai</dt>
+                        <dt class="col-sm-4">Tanggal Mulai Magang</dt>
                         <dd class="col-sm-8" id="detailTglMulai">...</dd>
-                        <dt class="col-sm-4">Tanggal Akhir</dt>
+                        <dt class="col-sm-4">Tanggal Akhir Magang</dt>
                         <dd class="col-sm-8" id="detailTglAkhir">...</dd>
                         <dt class="col-sm-4">Divisi yang Dipilih</dt>
                         <dd class="col-sm-8" id="detailDivisi">...</dd>
@@ -540,9 +591,8 @@
                                         <th style="width: 40px;">No</th>
                                         <th>Nama Lengkap</th>
                                         <th>NIS / NIM</th>
-                                        <th>Asal Instansi</th>
-                                        <th>Jurusan</th>
-                                        <th>No. HP</th>
+                                        <th>No. HP Aktif</th>
+                                        <th>Email</th>
                                         <th>Alamat</th>
                                     </tr>
                                 </thead>
@@ -621,11 +671,9 @@
                                     <td class="text-center">${index + 1}</td>
                                     <td>${anggota.nama || 'N/A'}</td>
                                     <td>${anggota.nim || 'N/A'}</td>
-                                    <td>${anggota.asal_instansi || '-'}</td>
-                                    <td>${anggota.jurusan || '-'}</td>
                                     <td>${anggota.no_hp || '-'}</td>
+                                    <td>${anggota.detailEmail || '-'}</td>
                                     <td>${anggota.alamat || '-'}</td>
-                                    <td>${anggota.divisi || '-'}</td>
                                 </tr>`;
                                                 tabelAnggota.innerHTML += row;
                                             });
@@ -699,8 +747,19 @@
                                 modalAlasan.addEventListener('show.bs.modal', function(event) {
                                     var button = event.relatedTarget;
                                     var alasan = button.getAttribute('data-alasan');
-                                    // Masukkan data ke modal
-                                    modalAlasan.querySelector('#isiAlasan').textContent = alasan;
+
+                                    // Debugging: Cek di Inspect Element -> Console
+                                    console.log("Tombol diklik, data alasan:", alasan);
+
+                                    // Ambil elemen <p> tempat menaruh teks
+                                    var elemenIsi = modalAlasan.querySelector('#isiAlasan');
+
+                                    // Cek apakah ada isinya atau tidak
+                                    if (alasan && alasan.trim() !== "") {
+                                        elemenIsi.textContent = alasan;
+                                    } else {
+                                        elemenIsi.textContent = "Tidak ada alasan yang dicantumkan.";
+                                    }
                                 });
                             }
                             var modalKonfirmasiSetujui = document.getElementById('modalKonfirmasiSetujui');
@@ -726,6 +785,29 @@
 
                                     // SET NILAI KE INPUT HIDDEN
                                     modalHapus.querySelector('#hapusIdPendaftar').value = id;
+                                });
+                            }
+
+                            // --- Modal 5: Konfirmasi Selesai (BARU) ---
+                            var modalSelesai = document.getElementById('modalSelesai');
+                            if (modalSelesai) {
+                                modalSelesai.addEventListener('show.bs.modal', function(event) {
+                                    var button = event.relatedTarget;
+
+                                    // Ambil data dari tombol
+                                    var id = button.getAttribute('data-id');
+                                    var nama = button.getAttribute('data-nama');
+
+                                    // 1. Update Nama di teks modal
+                                    modalSelesai.querySelector('#namaPesertaSelesai').textContent = nama;
+
+                                    // 2. Update Action URL pada Form secara dinamis
+                                    // Kita gunakan placeholder ':id' lalu replace dengan ID asli
+                                    var form = modalSelesai.querySelector('#formSelesai');
+                                    var urlTemplate = "{{ route('pendaftaran.selesai', ':id') }}";
+
+                                    // Ganti ':id' dengan ID pendaftar yang diklik
+                                    form.action = urlTemplate.replace(':id', id);
                                 });
                             }
 

@@ -65,6 +65,12 @@
             background-color: #e8f0fe;
             color: #1967d2;
         }
+
+        .status-selesai {
+            background-color: #e2e3e5;
+            /* Abu-abu terang */
+            color: #383d41;
+        }
     </style>
 @endpush
 
@@ -139,6 +145,15 @@
                                                         $keterangan ?:
                                                         'Maaf, pendaftaran Anda ditolak. Hubungi dinas terkait untuk info lebih lanjut.'; // Pesan default
                                                     break;
+                                                case 'selesai':
+                                                    $statusClass = 'status-selesai';
+                                                    $modalTitle = 'Magang Selesai';
+                                                    $modalIcon = 'fa-check-double'; // Ikon centang ganda
+                                                    $modalColor = 'text-secondary'; // Warna abu-abu/gelap
+                                                    $keterangan =
+                                                        $keterangan ?:
+                                                        'Selamat! Anda telah menyelesaikan program magang ini.';
+                                                    break;
                                                 default:
                                                     // 'diproses'
                                                     $statusClass = 'status-diproses';
@@ -172,7 +187,7 @@
                                         @endphp
 
                                         {{-- 2. Cek apakah status 'diterima' DAN file suratnya ada --}}
-                                        @if ($pendaftaran->status == 'diterima' && $suratBalasan)
+                                        @if ( ($pendaftaran->status == 'diterima' || $pendaftaran->status == 'selesai') && $suratBalasan)
                                             {{-- 3. INI BAGIAN PENTINGNYA --}}
                                             {{-- Kita gunakan Storage::url() SAMA SEPERTI CV KAMU --}}
                                             {{-- Kita juga tambahkan target="_blank" agar file dibuka di tab baru --}}

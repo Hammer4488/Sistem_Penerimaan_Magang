@@ -77,6 +77,7 @@ Route::middleware(['auth', 'role:admin dinas'])->group(function () {
     Route::post('/kelola-kuota', [DivisiController::class, 'store'])->name('admin.divisi.store');
     Route::put('/kelola-kuota/{divisi:id_divisi}', [DivisiController::class, 'update'])->name('admin.divisi.update');
     Route::delete('/kelola-kuota/{divisi:id_divisi}', [DivisiController::class, 'destroy'])->name('admin.divisi.destroy');
+    Route::put('/pendaftaran/{id}/selesai', [DinasController::class, 'tandaiSelesai'])->name('pendaftaran.selesai');
 });
 
 

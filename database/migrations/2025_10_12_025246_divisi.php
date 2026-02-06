@@ -15,7 +15,7 @@ public function up(): void
             $table->id('id_divisi')->autoIncrement(); // Primary key 'id'
             $table->foreignId('id_dinas')->constrained('dinas', 'id_dinas')->onDelete('cascade');
             $table->string('nama_divisi');
-            $table->integer('total_kuota')->default(0);
+            $table->integer('total_kuota')->default(999);
             $table->timestamps();
         });
     }

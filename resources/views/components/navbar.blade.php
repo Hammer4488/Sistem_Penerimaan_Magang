@@ -41,7 +41,7 @@
                
             <a href="{{ route('kuotamagang') }}" 
                class="nav-link text-dark {{ request()->routeIs('kuotamagang') ? 'fw-bold' : 'fw-normal' }}" 
-               style="font-size: 1.2rem;">Lihat kuota magang</a>
+               style="font-size: 1.2rem;">Lihat Instansi</a>
             {{-- [AKHIR PERBAIKAN] --}}
         </div>
 
